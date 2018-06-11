@@ -1,0 +1,14 @@
+{
+  "name": "feedback",
+  "authors": [
+    "Nikolay"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "dependencies": {
+    "jquery-ui": "^1.12.1"
+  }
+}
