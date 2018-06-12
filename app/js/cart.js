@@ -3,48 +3,64 @@
 window.onload = () => cart.init();
 
 const settings = {
-  "cartWrapperSelector": '.cart__wrapper',
-  "cartIconSelector": '.cart__icon',
-  "cartItemsSelector": '.cart__items',
-  "itemsAddButtonsSelector": '.product__add',
+  'cartWrapperSelector': '.cart__wrapper',
+  'cartWrapperClass': 'cart__wrapper',
+  'cartIconSelector': '.cart__icon',
+  'cartIconClass': 'cart__icon',
+  'cartElemClass': 'cart__items',
+  'itemsAddButtonsSelector': '.product__add',
 }
 
 const cart = {
   settings,
+  // Инициализируем корзину
   init() {
     const cartWrapper = document.querySelector(this.settings.cartWrapperSelector);
-    const cartItems = document.querySelector(this.settings.cartItemsSelector);
-    const itemsAddButtons = document.querySelectorAll(this.settings.cartItemsSelector);
     const itemsAddButtonsSelector = document.querySelectorAll(this.settings.itemsAddButtonsSelector);
     let items = [];
-    this.addCartEventShow(cartWrapper, cartItems);
-    this.addEventAddToCart(itemsAddButtonsSelector, items);
+    this.createCartElem(cartWrapper);
+    this.addToCartEvent(itemsAddButtonsSelector, items);
   },
 
-  addCartEventShow(cartWrapper, cartItems) {
-    cartWrapper.addEventListener('click', () => {
-      if (cartItems.style.display === "block") {
-        cartItems.style.display = "none";
+  // Создаем элемент и добавляем его на страницу
+  createCartElem(cartWrapper) {
+    const cartElem = document.createElement('div');
+    cartElem.classList.add(this.settings.cartElemClass);
+    cartElem.style.display === "none";
+
+    // Добавляем события на наведение мышкой для открытия коризны и клик снаружи элемента для закрытия
+    this.addCartEventShow(cartWrapper, cartElem);
+    cartWrapper.parentElement.insertBefore(cartElem, cartWrapper.nextSibling);
+  },
+
+  addCartEventShow(cartWrapper, cartElem) {
+    cartWrapper.addEventListener('mouseenter', () => {
+      cartElem.style.display = "block";
+      this.showEmptyCart(cartElem);
+    });
+    document.body.addEventListener('click', (e) => {
+      if (e.target.classList.contains(this.settings.cartElemClass) ||
+        e.target.classList.contains(this.settings.cartIconClass)) {
+        return;
       } else {
-        cartItems.style.display = "block";
-        this.showEmptyCart(cartItems);
+        cartElem.style.display = "none";
       }
     });
   },
 
-  showEmptyCart(cartItems) {
-    if (cartItems.children.length === 0) {
-      cartItems.style.lineHeight = "53px";
-      cartItems.style.fontSize = "26px";
-      cartItems.style.textAlign = "center";
-      cartItems.style.verticalAlign = "center";
-      cartItems.style.backgroundColor = "#fff";
-      cartItems.style.сlor = "#bbb";
-      cartItems.textContent = "Cart is empty";
+  showEmptyCart(cartElem) {
+    if (cartElem.children.length === 0) {
+      cartElem.style.lineHeight = "53px";
+      cartElem.style.fontSize = "26px";
+      cartElem.style.textAlign = "center";
+      cartElem.style.verticalAlign = "center";
+      cartElem.style.backgroundColor = "#fff";
+      cartElem.style.сlor = "#bbb";
+      cartElem.textContent = "Cart is empty";
     }
   },
 
-  addEventAddToCart(itemsAddButtonsSelector, items) {
+  addToCartEvent(itemsAddButtonsSelector, items) {
     itemsAddButtonsSelector.forEach(item => {
       item.addEventListener('click', (e) => {
         items.push(e.target);
