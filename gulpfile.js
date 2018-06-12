@@ -20,7 +20,7 @@ gulp.task('default', function () {
     console.log('task default executed');
 });
 
-gulp.task('default', ['delFiles', 'html', 'imagemin', 'json', 'fonts', 'sass', 'js', 'watchFiles', 'server'], function () {
+gulp.task('default', ['delFiles', 'watchFiles', 'html', 'imagemin', 'json', 'fonts', 'sass', 'js', 'server'], function () {
     console.log('task gulp executed');
 });
 
@@ -30,14 +30,14 @@ gulp.task('html', function () {
             collapseWhitespace: true
         }))
         .pipe(gulp.dest('./dist'));
-        
+
     BS.reload({
         stream: false
     });
 });
 
 gulp.task('sass', function () {
-    gulp.src(['./app/css/**/*.css', './app/sass/**/*.sass', './app/scss/**/*.scss'])
+    return gulp.src(['./app/css/**/*.css', './app/sass/**/*.sass', './app/scss/**/*.scss'])
         .pipe(sass())
         .pipe(autoPrefix())
         .pipe(gulp.dest('./dist/css'))
@@ -74,23 +74,34 @@ gulp.task('imagemin', function () {
         //     progressive: true
         // }))
         .pipe(gulp.dest('./dist/img'))
+        
+    BS.reload({
+        stream: false
+    });
 });
 
 gulp.task('json', function () {
     gulp.src(['./app/json/**/*'])
         .pipe(gulp.dest('./dist/json'))
+    BS.reload({
+        stream: false
+    });
 });
 
 gulp.task('fonts', function () {
     gulp.src(['./app/fonts/**/*'])
         .pipe(gulp.dest('./dist/fonts'))
+        
+    BS.reload({
+        stream: false
+    });
 });
 
 gulp.task('watchFiles', function () {
     gulp.watch('./app/html/**/*.html', ['html']);
-    // gulp.watch('./app/css/**/*.css', ['sass']);
+    gulp.watch('./app/css/**/*.css', ['sass']);
     gulp.watch('./app/scss/**/*.scss', ['sass']);
-    // gulp.watch('./app/sass/**/*.sass', ['sass']);
+    gulp.watch('./app/sass/**/*.sass', ['sass']);
     gulp.watch('./app/js/**/*.js', ['js']);
 });
 
