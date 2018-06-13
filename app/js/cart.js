@@ -63,18 +63,18 @@ const cart = {
   },
 
   cartRender(cartElem, items) {
-    //Сначала очищаем содержимое HTML корзины
+    //сначала очищаем содержимое HTML корзины
     cartElem.innerHTML = null;
 
-    //Проходим по массиву товаров и рендерим для них HTML и добавляем его в корзину
+    //проходим по массиву товаров и рендерим для них HTML и добавляем его в корзину
     items.forEach((item, i, arr) => {
-      //Создаем разделитель
+      //создаем разделитель
       let hr = document.createElement("div");
       hr.style.backgroundColor = "rgba(237, 237, 237, 0.75)";
       hr.style.height = "1px";
       hr.style.marginTop = "16px";
       hr.style.marginBottom = "16px";
-      //Создаем див куда вкладываем картинку названием рейтинг, кнопку удаления и цену с количеством
+      //создаем див куда вкладываем картинку названием рейтинг, кнопку удаления и цену с количеством
       let prod = document.createElement("div");
       prod.style.width = "230px";
       prod.style.height = "85px";
@@ -83,17 +83,17 @@ const cart = {
       itemImg.maxWidth = "72px";
       itemImg.maxHeight = "85px";
       prod.append(itemImg);
-      //У первого элемента не добавляем разделитель сверху
-      if (i > 0) cartElem.append(hr);
-      //Добавляем получившийся элемент в корзину
+      //добавляем получившийся элемент в корзину
       cartElem.append(prod);
+      //добавляем разделитель снизу
+      cartElem.append(hr);
     });
     this.cartButtons(cartElem, items);
   },
   cartButtons(cartElem, items) {
+    //создаем кнопку checkout
     let buttonCheckout = document.createElement("button");
     buttonCheckout.style.marginTop = "16px";
-    buttonCheckout.style.marginBottom = "16px";
     buttonCheckout.style.fontSize = "16px";
     buttonCheckout.style.color = "#f16d7f";
     buttonCheckout.style.border = "1px solid #f16d7f";
@@ -102,6 +102,7 @@ const cart = {
     buttonCheckout.style.width = "100%";
     buttonCheckout.style.height = "50px";
     buttonCheckout.style.outline = "none";
+    buttonCheckout.style.cursor = "pointer";
     buttonCheckout.style.backgroundColor = "#fff";
     $(buttonCheckout).hover(function () {
       $(this).css("background-color", "#f16d7f");
@@ -110,25 +111,29 @@ const cart = {
       $(this).css("background-color", "#fff");
       $(this).css("color", "#f16d7f");
     });
-cartElem.append(buttonCheckout);
-    // @include font-change(#ffffff,
-    //   16px,
-    //   700);
-    //   margin: 17px 0 0 0;
-    //   background-color: #f16d7f;
-    //   width: 273px;
-    //   height: 50px;
-    //   outline: none;
-    //   border: none;
-    //   text-transform: uppercase;
-    //   &:hover {
-    //     background-color: lighten(#f16d7f, 10)
-    //   }
-    //   &:active {
-    //     background-color: darken(#f16d7f, 20)
-    //   }
+    cartElem.append(buttonCheckout);
 
+    //создаем кнопку go to cart
     let buttonGoToCart = document.createElement("button");
+    buttonGoToCart.style.marginTop = "16px";
+    buttonGoToCart.style.fontSize = "16px";
+    buttonGoToCart.style.color = "#b1b1b1";
+    buttonGoToCart.style.border = "1px solid #b1b1b1";
+    buttonGoToCart.textContent = "go to cart";
+    buttonGoToCart.style.textTransform = "uppercase";
+    buttonGoToCart.style.width = "100%";
+    buttonGoToCart.style.height = "50px";
+    buttonGoToCart.style.outline = "none";
+    buttonGoToCart.style.cursor = "pointer";
+    buttonGoToCart.style.backgroundColor = "#fff";
+    $(buttonGoToCart).hover(function () {
+      $(this).css("background-color", "#b1b1b1");
+      $(this).css("color", "#fff");
+    }, function () {
+      $(this).css("background-color", "#fff");
+      $(this).css("color", "#b1b1b1");
+    });
+    cartElem.append(buttonGoToCart);
   },
   showEmptyCart(cartElem) {
     if (cartElem.children.length === 0) {
