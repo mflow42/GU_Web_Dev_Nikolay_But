@@ -193,7 +193,6 @@ body {
       background-color: rgba(255, 255, 255, .3);
     }
   }
-
   &:hover {
     box-shadow: 0px 2px 21px 0px rgba(0, 0, 0, 0.23);
     .product__image {
@@ -684,7 +683,7 @@ body {
   }
 }
 
-.radio_custom:checked + .radio_custom_label:after {
+.radio_custom:checked+.radio_custom_label:after {
   filter: opacity(1);
 } //----------
 //feature
@@ -733,7 +732,7 @@ body {
           left: -30px;
           width: 50px;
           height: 50px;
-          background: url("/img/Forma%201.png") center no-repeat;
+          background: url("../img/Forma%201.png") center no-repeat;
         }
       }
       &:nth-child(2) {
@@ -745,7 +744,7 @@ body {
           left: -30px;
           width: 50px;
           height: 50px;
-          background: url("/img/Forma%202.png") center no-repeat;
+          background: url("../img/Forma%202.png") center no-repeat;
         }
       }
       &:nth-child(3) {
@@ -757,7 +756,7 @@ body {
           left: -30px;
           width: 50px;
           height: 50px;
-          background: url("/img/Forma%203.png") center no-repeat;
+          background: url("../img/Forma%203.png") center no-repeat;
         }
       }
     }
@@ -773,7 +772,7 @@ body {
   display: flex;
   justify-content: center;
   margin: 0 auto;
-  background: url("/img/Layer%20101.png") center 100% no-repeat;
+  background: url("../img/Layer%20101.png") center 100% no-repeat;
   &:before {
     content: "";
     position: absolute;
@@ -830,7 +829,7 @@ body {
           &:before {
             position: absolute;
             display: block;
-            content: url("/img/Layer%20100.png");
+            content: url("../img/Layer%20100.png");
             top: 0;
             right: 100%;
           }
@@ -1277,17 +1276,22 @@ body {
   &__items {
     display: none;
     z-index: 1; //    height: 300px;
-    width: 400px;
-    border: 1px solid;
+    width: 262px;
+    border: 0px solid;
     position: absolute;
-    top: 100%;
+    top: 75px;
     right: 0;
     @include font-change(#777777,
     16px,
     400);
+    border-radius: 5px;
+    background-color: #ffffff;
+    width: 262px;
+    height: auto;
+    padding: 16px;
   }
   &__icon {
-    background: url("/img/Forma%200.png") center no-repeat;
+    background: url("../img/Forma%200.png") center no-repeat;
     background-size: 100%;
     transition: drop-shadow .2s linear, transform .2s linear;
     display: flex;
@@ -1431,16 +1435,16 @@ main {
     height: 261px;
   }
   &__man {
-    background: url("/img/Banner1.jpg") no-repeat center;
+    background: url("../img/Banner1.jpg") no-repeat center;
   }
   &__accessories {
-    background: url("/img/Banner2.jpg") no-repeat center;
+    background: url("../img/Banner2.jpg") no-repeat center;
   }
   &__women {
-    background: url("/img/Banner3.jpg") no-repeat center;
+    background: url("../img/Banner3.jpg") no-repeat center;
   }
   &__kids {
-    background: url("/img/Banner4.jpg") no-repeat center;
+    background: url("../img/Banner4.jpg") no-repeat center;
   }
   &__img {
     background-size: 100%;
@@ -2044,7 +2048,7 @@ $wh-cube: 32px;
   &__checkbox {
     opacity: 0;
     margin-left: 5px;
-    &:checked ~ .size__checkmark {
+    &:checked~.size__checkmark {
       background-color: #ef5b70;
     }
   }
@@ -2334,17 +2338,17 @@ $wh-cube: 32px;
   &__img1 {
     width: 50px;
     height: 50px;
-    background: url("/img/Forma%201.png") center no-repeat;
+    background: url("../img/Forma%201.png") center no-repeat;
   }
   &__img2 {
     width: 50px;
     height: 50px;
-    background: url("/img/Forma%202.png") center no-repeat;
+    background: url("../img/Forma%202.png") center no-repeat;
   }
   &__img3 {
     width: 50px;
     height: 50px;
-    background: url("/img/Forma%203.png") center no-repeat;
+    background: url("../img/Forma%203.png") center no-repeat;
   }
   &__title {
     margin-top: 20px;
@@ -2425,7 +2429,7 @@ $wh-cube: 32px;
           background-color: #222;
         }
         &_cart:hover .cart__icon {
-          background: url("/img/Forma%200.png") center no-repeat;
+          background: url("../img/Forma%200.png") center no-repeat;
         }
       }
       &__menu:hover .mob-navbar {
@@ -2492,7 +2496,7 @@ $wh-cube: 32px;
     display: none;
   }
   .cart__icon {
-    background: url("/img/Forma%206.png") center no-repeat;
+    background: url("../img/Forma%206.png") center no-repeat;
     position: relative;
     &_badge {
       display: flex;
@@ -2563,7 +2567,7 @@ $wh-cube: 32px;
       transition: all 0.3s ease;
       filter: brightness(1);
       overflow: hidden;
-      + .accessories {
+      +.accessories {
         width: 100%;
       }
     }
@@ -2572,7 +2576,7 @@ $wh-cube: 32px;
       height: 260px;
       overflow: hidden;
       background-size: contain;
-      + .accessories {
+      +.accessories {
         width: 100%;
         height: 180px;
         order: 2;
@@ -2594,21 +2598,21 @@ $wh-cube: 32px;
       height: 100%;
     }
     &__man {
-      background: url("/img/Layer%2030.png") no-repeat center;
+      background: url("../img/Layer%2030.png") no-repeat center;
       background-size: 100%;
     }
     &__accessories {
       width: 100%;
       height: 180px;
-      background: url("/img/Layer%2045.png") no-repeat center;
+      background: url("../img/Layer%2045.png") no-repeat center;
       background-size: 100%;
     }
     &__women {
-      background: url("/img/Layer%2043.png") no-repeat center;
+      background: url("../img/Layer%2043.png") no-repeat center;
       background-size: 100%;
     }
     &__kids {
-      background: url("/img/Layer%2044.png") no-repeat center;
+      background: url("../img/Layer%2044.png") no-repeat center;
       background-size: 100%;
     }
   }
@@ -2711,19 +2715,19 @@ $wh-cube: 32px;
       &__img1 {
         width: 50px;
         height: 50px;
-        background: url("/img/Forma%201.png") center no-repeat;
+        background: url("../img/Forma%201.png") center no-repeat;
         margin-bottom: 15px;
       }
       &__img2 {
         width: 50px;
         height: 50px;
-        background: url("/img/Forma%202.png") center no-repeat;
+        background: url("../img/Forma%202.png") center no-repeat;
         margin-bottom: 15px;
       }
       &__img3 {
         width: 50px;
         height: 50px;
-        background: url("/img/Forma%203.png") center no-repeat;
+        background: url("../img/Forma%203.png") center no-repeat;
         margin-bottom: 15px;
       }
     }
@@ -2773,7 +2777,7 @@ $wh-cube: 32px;
       justify-content: center;
       align-items: center;
       flex: 0 1 100%;
-      background: url("/img/Layer%20101.png") no-repeat;
+      background: url("../img/Layer%20101.png") no-repeat;
       background-position: center;
       background-size: cover;
       height: 438px;
