@@ -1308,6 +1308,89 @@ body {
       //      height: 40px;
     }
   }
+  &__btn_pink {
+    margin-top: 16px;
+    font-size: 16px;
+    text-transform: uppercase;
+    width: 100%;
+    height: 50px;
+    outline: none;
+    cursor: pointer;
+    border: 1px solid #f16d7f;
+    background-color: #fff;
+    color: #f16d7f;
+    &:hover {
+      background-color: #f16d7f;
+      color: #fff;
+    }
+  }
+  &__btn_grey {
+    @extend .cart__btn_pink;
+    border: 1px solid #b1b1b1;
+    background-color: #fff;
+    color: #b1b1b1;
+    &:hover {
+      background-color: #b1b1b1;
+      color: #fff;
+    }
+  }
+  &__prod {
+    display: flex;
+    flex-flow: column wrap;
+    width: 230px;
+    height: 85px;
+  }
+  &__btn_close {
+    color: #b1b1b1;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    &:hover {
+    color: #f16d7f;
+
+    }
+  }
+  &__name {
+    display: block;
+    width: calc(100% - 72px);
+    margin: 0;
+    margin: 5px 0 5px 15px;
+    color: #000;
+    font-weight: 700;
+    font-size: 14px;
+  }
+  &__img {
+    width: 72px;
+    height: 85px;
+  }
+  &__text_wrapper {
+    margin: 5px 0 5px 15px;
+    width: 158px;
+  }
+  &__text_pink {
+    @include font-change(#f16d7f,
+    14px,
+    400);
+    display: inline;
+  }
+  &__text_tech {
+    @include font-change(#f16d7f,
+    14px,
+    400);
+    display: inline;
+  }
+  &__star {
+    color: #e4af48;
+    font-size: 12px;
+    &s {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      flex-flow: row nowrap;
+      margin: 5px 0 5px 15px;
+    }
+  }
 }
 
 .my-acc-btn {

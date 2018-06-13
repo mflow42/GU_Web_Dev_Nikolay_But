@@ -4,10 +4,20 @@ window.onload = () => cart.init();
 
 const settings = {
   'cartWrapperSelector': '.cart__wrapper',
-  'cartWrapperClass': 'cart__wrapper',
+  'cartWrapperClass': `cart__wrapper`,
   'cartIconSelector': '.cart__icon',
-  'cartIconClass': 'cart__icon',
+  'cartIconClass': `cart__icon`,
   'cartElemClass': 'cart__items',
+  'cartImgClass': 'cart__img',
+  'cartProdClass': 'cart__prod',
+  'cartNameClass': 'cart__name',
+  'cartStarsClass': 'cart__stars',
+  'cartBtnCloseClass': 'cart__btn_close',
+  'cartTextPinkClass': 'cart__text_pink',
+  'cartTextTechClass': 'cart__text_tech',
+  'cartTextWrapperClass': 'cart__text_wrapper',
+  'cartButtonCheckoutClass': 'cart__btn_pink',
+  'cartButtonGoToCartClass': 'cart__btn_grey',
   'itemsAddButtonsSelector': '.product__add',
 }
 
@@ -18,12 +28,19 @@ const cart = {
     let items = [{
       "id": 1,
       "imgPath": "img/cart-1.png",
-      "name": "REBOX ZANE",
+      "name": "REBOX ZANE1",
+      "rating": 4,
+      "price": 52,
+      "qty": 1,
     }, {
       "id": 2,
       "imgPath": "img/cart-2.png",
-      "name": "REBOX ZANE",
+      "name": "REBOX ZANE2",
+      "rating": 4,
+      "price": 52,
+      "qty": 2,
     }];
+    let total = 0;
     const cartWrapper = document.querySelector(this.settings.cartWrapperSelector);
     const itemsAddButtonsSelector = document.querySelectorAll(this.settings.itemsAddButtonsSelector);
     this.createCartElem(cartWrapper, items);
@@ -53,8 +70,8 @@ const cart = {
       }
     });
     document.body.addEventListener('click', (e) => {
-      if (e.target.classList.contains(this.settings.cartElemClass) ||
-        e.target.classList.contains(this.settings.cartIconClass)) {
+      if (e.target.closest(`.${this.settings.cartElemClass}`) ||
+        e.target.closest(`.${this.settings.cartIconClass}`)) {
         return;
       } else {
         cartElem.style.display = "none";
@@ -76,13 +93,60 @@ const cart = {
       hr.style.marginBottom = "16px";
       //создаем див куда вкладываем картинку названием рейтинг, кнопку удаления и цену с количеством
       let prod = document.createElement("div");
-      prod.style.width = "230px";
-      prod.style.height = "85px";
+      prod.classList.add(this.settings.cartProdClass);
       let itemImg = document.createElement("img");
       itemImg.src = item.imgPath;
-      itemImg.maxWidth = "72px";
-      itemImg.maxHeight = "85px";
+      itemImg.classList.add(this.settings.cartImgClass);
       prod.append(itemImg);
+
+      //добавляем элемент с названием товара
+      let name = document.createElement("p");
+      name.classList.add(this.settings.cartNameClass);
+      name.textContent = item.name;
+      prod.append(name);
+
+      //создаем див, куда будем добавлять звезды
+      let stars = document.createElement("div");
+      stars.classList.add(this.settings.cartStarsClass)
+      for (let i = 0; i < 5; i++) {
+        if (i < item.rating) {
+          stars.innerHTML += `<i class="fas fa-star cart__star"></i>`;
+        } else {
+          stars.innerHTML += `<i class="far fa-star cart__star"></i>`;
+        }
+      }
+      prod.append(stars);
+
+      //создаем обертку под текст количества и цены
+      let priceDiv = document.createElement("div");
+      priceDiv.classList.add(this.settings.cartTextWrapperClass);
+
+      //добавляем спан с количеством
+      let qty = document.createElement("p");
+      qty.textContent = item.qty;
+      qty.classList.add(this.settings.cartTextPinkClass);
+      priceDiv.append(qty);
+
+      //добавляем технический текст "&nbsp;x&nbsp;$"
+      let techText = document.createElement("p");
+      techText.classList.add(this.settings.cartTextTechClass);
+      techText.innerHTML += "&nbsp;&nbsp;x&nbsp;&nbsp;$";
+      priceDiv.append(techText);
+      prod.append(priceDiv);
+
+      //добавляем цену
+      let price = document.createElement("p");
+      price.classList.add(this.settings.cartTextTechClass);
+      price.textContent = item.price;
+      priceDiv.append(price);
+      prod.append(priceDiv);
+
+      //добавляем спан с кнопкой-крестиком удаления
+      let closeBtn = document.createElement("p");
+      closeBtn.innerHTML += `<i class="fas fa-times-circle"></i>`;
+      closeBtn.classList.add(this.settings.cartBtnCloseClass);
+      prod.append(closeBtn);
+
       //добавляем получившийся элемент в корзину
       cartElem.append(prod);
       //добавляем разделитель снизу
@@ -90,49 +154,20 @@ const cart = {
     });
     this.cartButtons(cartElem, items);
   },
+  countInArray(array, prod) {
+    return array.filter(item => item == prod).length;
+  },
   cartButtons(cartElem, items) {
     //создаем кнопку checkout
     let buttonCheckout = document.createElement("button");
-    buttonCheckout.style.marginTop = "16px";
-    buttonCheckout.style.fontSize = "16px";
-    buttonCheckout.style.color = "#f16d7f";
-    buttonCheckout.style.border = "1px solid #f16d7f";
+    buttonCheckout.classList.add(this.settings.cartButtonCheckoutClass);
     buttonCheckout.textContent = "checkout";
-    buttonCheckout.style.textTransform = "uppercase";
-    buttonCheckout.style.width = "100%";
-    buttonCheckout.style.height = "50px";
-    buttonCheckout.style.outline = "none";
-    buttonCheckout.style.cursor = "pointer";
-    buttonCheckout.style.backgroundColor = "#fff";
-    $(buttonCheckout).hover(function () {
-      $(this).css("background-color", "#f16d7f");
-      $(this).css("color", "#fff");
-    }, function () {
-      $(this).css("background-color", "#fff");
-      $(this).css("color", "#f16d7f");
-    });
     cartElem.append(buttonCheckout);
 
     //создаем кнопку go to cart
     let buttonGoToCart = document.createElement("button");
-    buttonGoToCart.style.marginTop = "16px";
-    buttonGoToCart.style.fontSize = "16px";
-    buttonGoToCart.style.color = "#b1b1b1";
-    buttonGoToCart.style.border = "1px solid #b1b1b1";
+    buttonGoToCart.classList.add(this.settings.cartButtonGoToCartClass);
     buttonGoToCart.textContent = "go to cart";
-    buttonGoToCart.style.textTransform = "uppercase";
-    buttonGoToCart.style.width = "100%";
-    buttonGoToCart.style.height = "50px";
-    buttonGoToCart.style.outline = "none";
-    buttonGoToCart.style.cursor = "pointer";
-    buttonGoToCart.style.backgroundColor = "#fff";
-    $(buttonGoToCart).hover(function () {
-      $(this).css("background-color", "#b1b1b1");
-      $(this).css("color", "#fff");
-    }, function () {
-      $(this).css("background-color", "#fff");
-      $(this).css("color", "#b1b1b1");
-    });
     cartElem.append(buttonGoToCart);
   },
   showEmptyCart(cartElem) {
