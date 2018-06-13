@@ -12,6 +12,7 @@ const settings = {
   'cartProdClass': 'cart__prod',
   'cartNameClass': 'cart__name',
   'cartStarsClass': 'cart__stars',
+  'cartTotalClass': 'cart__total',
   'cartBtnCloseClass': 'cart__btn_close',
   'cartTextPinkClass': 'cart__text_pink',
   'cartTextTechClass': 'cart__text_tech',
@@ -23,6 +24,7 @@ const settings = {
 
 const cart = {
   settings,
+  total: 0,
   // Инициализируем корзину
   init() {
     let items = [{
@@ -40,7 +42,6 @@ const cart = {
       "price": 52,
       "qty": 2,
     }];
-    let total = 0;
     const cartWrapper = document.querySelector(this.settings.cartWrapperSelector);
     const itemsAddButtonsSelector = document.querySelectorAll(this.settings.itemsAddButtonsSelector);
     this.createCartElem(cartWrapper, items);
@@ -152,11 +153,33 @@ const cart = {
       //добавляем разделитель снизу
       cartElem.append(hr);
     });
+    this.countTotal(items);
+    this.makeTotalElem(cartElem);
     this.cartButtons(cartElem, items);
   },
-  countInArray(array, prod) {
-    return array.filter(item => item == prod).length;
+
+  countTotal(items) {
+    this.total = 0;
+    items.forEach(item => {
+      let sum = item.qty * item.price;
+      this.total += sum;
+    });
   },
+
+  makeTotalElem(cartElem) {
+    let wrapper = document.createElement("div");
+    wrapper.classList.add(this.settings.cartTotalClass);
+    let text = document.createElement("div");
+    text.width = "50%";
+    text.textContent = "TOTAL";
+    wrapper.append(text);
+    let total = document.createElement("div");
+    total.width = "50%";
+    total.textContent = this.total;
+    wrapper.append(total);
+    cartElem.append(wrapper);
+  },
+
   cartButtons(cartElem, items) {
     //создаем кнопку checkout
     let buttonCheckout = document.createElement("button");

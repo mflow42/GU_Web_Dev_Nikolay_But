@@ -1,6 +1,6 @@
 @font-face {
   font-family: "Lato";
-  src: url("fonts/lato-v14-latin-regular.eot?") format("eot"), url("fonts/lato-v14-latin-regular.woff2") format("woff2"), url("fonts/lato-v14-latin-regular.woff") format("woff"), url("fonts/lato-v14-latin-regular.ttf") format("truetype"), url("fonts/lato-v14-latin-regular.svg#Lato") format("svg");
+  src: url("../fonts/lato-v14-latin-regular.woff2") format("woff");
 }
 @-webkit-keyframes blink {
   0% {
@@ -1740,6 +1740,12 @@ body {
       -ms-flex-flow: row nowrap;
           flex-flow: row nowrap;
   margin: 5px 0 5px 15px;
+}
+.cart__total {
+  color: #222222;
+  font-size: 16px;
+  font-weight: 700;
+  font-family: Lato;
 }
 
 .my-acc-btn {

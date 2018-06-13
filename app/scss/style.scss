@@ -1,6 +1,12 @@
 @import '_mixins.scss';
-@include font-face(Lato, "fonts/lato-v14-latin-regular");
-@mixin font-change($color, $size, $weight) {
+@font-face {
+  font-family: "Lato";
+  src: url("../fonts/lato-v14-latin-regular.woff2") format('woff');
+}
+
+@mixin font-change($color,
+$size,
+$weight) {
   color: $color;
   font-size: $size;
   font-weight: $weight;
@@ -25,7 +31,9 @@
 
 $border-standard: 1px solid #eaeaea;
 %button-cart {
-  @include font-change(#b1b1b1, 13px, 300);
+  @include font-change(#b1b1b1,
+  13px,
+  300);
   border: $border-standard;
   box-sizing: border-box;
   width: 100%;
@@ -108,7 +116,9 @@ body {
 .featured {
   &_heading {
     margin: 0 auto 16px;
-    @include font-change(#222, 30px, 700);
+    @include font-change(#222,
+    30px,
+    700);
     text-align: center;
   }
   &_p {
@@ -1303,10 +1313,6 @@ body {
     height: 30px;
     text-decoration: none;
     color: black;
-    &:active {
-      //      width: 40px;
-      //      height: 40px;
-    }
   }
   &__btn_pink {
     margin-top: 16px;
@@ -1347,8 +1353,7 @@ body {
     align-items: center;
     cursor: pointer;
     &:hover {
-    color: #f16d7f;
-
+      color: #f16d7f;
     }
   }
   &__name {
@@ -1390,6 +1395,12 @@ body {
       flex-flow: row nowrap;
       margin: 5px 0 5px 15px;
     }
+  }
+  &__total {
+    @include font-change(#222222,
+    16px,
+    700);
+    font-family: Lato;
   }
 }
 
