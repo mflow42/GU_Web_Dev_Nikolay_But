@@ -1,7 +1,7 @@
 'use strict';
 
 const settings = {
-  idContainer: 'container',
+  idContainer: 'comments',
   idCommentBlock: 'comment_wrapper',
   classCommentApproved: 'approved',
   urlGetAllComments: 'json/review.list.json',
@@ -16,8 +16,8 @@ const comments = {
   comments: [],
 
   init() {
-    this.commentEl = document.querySelector(`#${this.settings.idCommentBlock}`);
-    document.querySelector(`#${idContainer}`).addEventListener('click', this.btnClickHandler(event));
+    this.commentEl = document.querySelector(`#${idContainer}`);
+    commentEl.addEventListener('click', this.btnClickHandler(event));
     let xhr = new XMLHttpRequest();
     xhr.open('GET', 'json/comments.json', true);
 
@@ -25,6 +25,7 @@ const comments = {
       if (this.status === 200) {
         JSON.parse(this.responseText).array.forEach(element => {
           this.comments.push(element);
+          
         });
       }
     }
