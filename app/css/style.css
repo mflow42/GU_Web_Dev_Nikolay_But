@@ -3035,6 +3035,69 @@ main {
   display: none;
 }
 
+.comments {
+  font-family: Lato;
+  width: 1140px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  margin: 0 auto;
+  border: 1px solid #eaeaea;
+  padding: 20px;
+}
+.comments__comment {
+  border: 1px solid #eaeaea;
+  margin-bottom: 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: row wrap;
+          flex-flow: row wrap;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+.comments__comment.approved {
+  border-color: #58a84c;
+}
+.comments__message {
+  width: 100%;
+  margin: 0;
+  padding: 15px 10px;
+}
+.comments__btn_delete {
+  font-family: Lato;
+  font-size: 16px;
+  padding: 10px;
+  text-transform: uppercase;
+  width: 50%;
+  outline: none;
+  cursor: pointer;
+  border: 1px solid #f16d7f;
+  background-color: #fff;
+  color: #f16d7f;
+}
+.comments__btn_delete:hover {
+  background-color: #f16d7f;
+  color: #fff;
+}
+.comments__btn_approve {
+  font-size: 16px;
+  padding: 10px;
+  text-transform: uppercase;
+  width: 50%;
+  outline: none;
+  cursor: pointer;
+  border: 1px solid #58a84c;
+  background-color: #fff;
+  color: #58a84c;
+}
+.comments__btn_approve:hover {
+  background-color: #58a84c;
+  color: #fff;
+}
+
 @media screen and (min-width: 1141px) {
   .header-bar-first-mobile {
     visibility: hidden;

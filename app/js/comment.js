@@ -2,15 +2,15 @@
 
 class Comment {
   constructor(commentId, message, classContainer, classMessage, classDelBtn, classApprovelBtn) {
-    this.message = message;
     this.commentId = commentId;
+    this.message = message;
     this.classContainer = classContainer;
     this.classMessage = classMessage;
     this.classDelBtn = classDelBtn;
     this.classApprovelBtn = classApprovelBtn;
   }
 
-  render(container) {
+  render(commentEl) {
     const containerComment = document.createElement('div');
     containerComment.classList.add(this.classContainer);
     containerComment.dataset.id = this.commentId;
@@ -20,22 +20,21 @@ class Comment {
     messageComment.classList.add(this.classMessage);
     messageComment.textContent = this.message;
 
+    const approveBtnComment = document.createElement('button');
+    approveBtnComment.classList.add(this.classApprovelBtn);
+    approveBtnComment.dataset.id = this.commentId;
+    approveBtnComment.dataset.type = 'approve';
+    approveBtnComment.textContent = 'approve';
 
     const delBtnComment = document.createElement('button');
     delBtnComment.classList.add(this.classDelBtn);
     delBtnComment.dataset.id = this.commentId;
     delBtnComment.dataset.type = 'delete';
-    delBtnComment.textContent = 'Удалить';
+    delBtnComment.textContent = 'delete';
 
-    const approveBtnComment = document.createElement('button');
-    delBtnComment.classList.add(this.classApprovelBtn);
-    delBtnComment.dataset.id = this.commentId;
-    delBtnComment.dataset.type = 'approve';
-    delBtnComment.textContent = 'Одобрить';
-
-    containerComment.append(messageComment)
-      .append(delBtnComment)
-      .append(approveBtnComment)
-      .appendTo(container);
+    commentEl.append(containerComment);
+    containerComment.append(messageComment);
+    containerComment.append(approveBtnComment);
+    containerComment.append(delBtnComment);
   }
 };
