@@ -28,13 +28,11 @@ const comments = {
       if (this.status === 200) {
         JSON.parse(this.responseText).forEach(element => {
           console.log(element);
-
           this.comments.push(element);
           this.render();
         });
       }
     }
-
     xht.send();
   },
 
