@@ -1,8 +1,16 @@
 {
   "comments": [
     {
-      "id_comment": 123,
-      "text": "Текст отзыва"
+      "id_comment": 1,
+      "text": "Текст отзыва1"
+    },
+    {
+      "id_comment": 2,
+      "text": "Текст отзыва2"
+    },
+    {
+      "id_comment": 3,
+      "text": "Текст отзыва3"
     }
   ]
 }

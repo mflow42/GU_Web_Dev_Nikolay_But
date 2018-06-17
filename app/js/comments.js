@@ -2,7 +2,6 @@
 
 const settings = {
   idContainer: 'comments',
-  idCommentBlock: 'comment_wrapper',
   classCommentApproved: 'approved',
   urlGetAllComments: 'json/review.list.json',
   urlDelComment: 'json/review.delete.json',
@@ -15,17 +14,25 @@ const comments = {
   commentEl: null,
   comments: [],
 
-  init() {
-    this.commentEl = document.querySelector(`#${idContainer}`);
-    commentEl.addEventListener('click', this.btnClickHandler(event));
+
+
+  init(userSettings = {}) {
+    // Записываем настройки, которые передал пользователь в наши настройки.
+    Object.assign(this.settings, userSettings);
+    this.commentEl = document.querySelector(`#${this.idContainer}`);
+    console.log();
+
+    this.commentEl.addEventListener('click', this.btnClickHandler(event));
     let xhr = new XMLHttpRequest();
-    xhr.open('GET', 'json/comments.json', true);
+    xhr.open('GET', 'json/comment.list.json', true);
 
     xhr.onload = function () {
       if (this.status === 200) {
-        JSON.parse(this.responseText).array.forEach(element => {
+        JSON.parse(this.responseText).forEach(element => {
+          console.log(element);
+
           this.comments.push(element);
-          
+          this.render();
         });
       }
     }
@@ -42,3 +49,5 @@ const comments = {
     }
   },
 };
+
+window.onload = () => comments.init();
