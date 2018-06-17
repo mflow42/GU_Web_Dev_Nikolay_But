@@ -14,8 +14,6 @@ const comments = {
   commentEl: null,
   comments: [],
 
-
-
   init(userSettings = {}) {
     // Записываем настройки, которые передал пользователь в наши настройки.
     Object.assign(this.settings, userSettings);
@@ -26,7 +24,7 @@ const comments = {
     let xhr = new XMLHttpRequest();
     xhr.open('GET', 'json/comment.list.json', true);
 
-    xhr.onload = function () {
+    xhr.onload = function() {
       if (this.status === 200) {
         JSON.parse(this.responseText).forEach(element => {
           console.log(element);
