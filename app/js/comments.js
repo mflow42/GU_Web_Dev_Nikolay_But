@@ -20,7 +20,7 @@ const comments = {
     this.commentEl = document.querySelector(`#${settings.idContainer}`);
     this.commentEl.addEventListener('click', this.btnClickHandler.bind(this));
     let xhr = new XMLHttpRequest();
-    xhr.open('GET', 'json/comment.list.json', true);
+    xhr.open('GET', this.settings.urlGetAllComments, true);
     let that = this;
     xhr.onload = function () {
       if (this.status === 200) {
@@ -49,10 +49,8 @@ const comments = {
     let that = this;
     let xhr = new XMLHttpRequest();
     xhr.open('GET', that.settings.urlApprovalComment, true);
-    xhr.onload = function (event) {
+    xhr.onload = function () {
       if (this.status === 200) {
-console.log(event);
-
         let comment = target.closest('.comments__comment');
         comment.classList.add('approved');
         comment.dataset.approved = true;

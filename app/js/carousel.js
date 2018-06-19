@@ -13,18 +13,21 @@
  * @property {string} settings.openedImageArrowNextIcon Путь до правой картинки-стрелки слайдера.
  * @property {string} settings.openedImageArrowNextClass Класс правой картинки-стрелки слайдера.
  */
+const settings = {
+  carouselSelector: null,
+  carouselInnerClass: null,
+  currentImageClass: null,
+  arrowPrevSpanClass: null,
+  arrowNextSpanClass: null,
+  arrowIconClass1: null,
+  arrowPrevIconClass2: null,
+  arrowNextIconClass2: null,
+  imagesJSON: null,
+};
+
+
 const gallery = {
-  settings: {
-    carouselSelector: '.carousel',
-    carouselInnerClass: 'carousel__inner',
-    currentImageClass: 'carousel__img',
-    arrowPrevSpanClass: 'carousel__inner_left-arrow',
-    arrowNextSpanClass: 'carousel__inner_right-arrow',
-    arrowIconClass1: 'fas',
-    arrowPrevIconClass2: 'fa-angle-left',
-    arrowNextIconClass2: 'fa-angle-right',
-    imagesJSON: 'json/carousel.json',
-  },
+  settings,
   images: [],
   currentImgSrc: 'img/carousel/carousel-img1.jpg',
   currentImgIndex: 0,
@@ -105,6 +108,7 @@ const gallery = {
    * @param {string} src Ссылка на картинку, которую надо открыть.
    */
   loadImage() {
+
     let img = document.createElement('img');
     img.classList.add(this.settings.currentImageClass);
     img.src = this.images[0].src;
@@ -154,5 +158,5 @@ window.onload = () => gallery.init({
   arrowIconClass1: 'fas',
   arrowPrevIconClass2: 'fa-angle-left',
   arrowNextIconClass2: 'fa-angle-right',
-  images: [],
+  imagesJSON: 'json/carousel.json',
 });
