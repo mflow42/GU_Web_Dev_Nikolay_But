@@ -1,5 +1,6 @@
 "use strict";
 
+
 /**
  * @property {Object} settings Объект с настройками галереи.
  * @property {string} settings.carouselSelector Селектор обертки для миниатюр галереи.
@@ -13,7 +14,7 @@
  * @property {string} settings.openedImageArrowNextIcon Путь до правой картинки-стрелки слайдера.
  * @property {string} settings.openedImageArrowNextClass Класс правой картинки-стрелки слайдера.
  */
-const settings = {
+const settingsCarousel = {
   carouselSelector: null,
   carouselInnerClass: null,
   currentImageClass: null,
@@ -25,9 +26,8 @@ const settings = {
   imagesJSON: null,
 };
 
-
-const gallery = {
-  settings,
+const carousel = {
+  settingsCarousel,
   images: [],
   currentImgSrc: 'img/carousel/carousel-img1.jpg',
   currentImgIndex: 0,
@@ -39,19 +39,13 @@ const gallery = {
    * Инициализирует галерею, ставит обработчик события.
    * @param {Object} userSettings Объект настроек для галереи.
    */
-  buildHtml() {
-    this.carousel = document.querySelector(this.settings.carouselSelector);
-    this.carouselInner = document.createElement('div');
-    this.carouselInner.classList.add(this.settings.carouselInnerClass)
-    this.carousel.append(this.carouselInner);
-    this.currentImg = this.loadImage();
-  },
+
 
   init(userSettings = {}) {
     // Записываем настройки, которые передал пользователь в наши настройки.
-    Object.assign(this.settings, userSettings);
+    Object.assign(this.settingsCarousel, userSettings);
     let xhrImgs = new XMLHttpRequest();
-    xhrImgs.open('GET', this.settings.imagesJSON, false);
+    xhrImgs.open('GET', this.settingsCarousel.imagesJSON, false);
     let savedThis = this;
     xhrImgs.onload = function () {
       if (this.status === 200) {
@@ -67,6 +61,13 @@ const gallery = {
     this.createArrowRight();
   },
 
+  buildHtml() {
+    this.carousel = document.querySelector(this.settingsCarousel.carouselSelector);
+    this.carouselInner = document.createElement('div');
+    this.carouselInner.classList.add(this.settingsCarousel.carouselInnerClass)
+    this.carousel.append(this.carouselInner);
+    this.currentImg = this.loadImage();
+  },
   /**
    * Возвращает следующий элемент (картинку) от открытой или первую картинку в контейнере,
    * если текущая открытая картинка последняя.
@@ -108,9 +109,8 @@ const gallery = {
    * @param {string} src Ссылка на картинку, которую надо открыть.
    */
   loadImage() {
-
     let img = document.createElement('img');
-    img.classList.add(this.settings.currentImageClass);
+    img.classList.add(this.settingsCarousel.currentImageClass);
     img.src = this.images[0].src;
     this.carouselInner.append(img);
     return img;
@@ -123,11 +123,11 @@ const gallery = {
   createArrowLeft() {
     // Создаем левую картинку-стрелку слайдера, ставим им класс, src и добавляем в контейнер-обертку, навешиваем событие на клик.
     const galleryArrowElementPrev = document.createElement('span');
-    galleryArrowElementPrev.classList.add(this.settings.arrowPrevSpanClass);
+    galleryArrowElementPrev.classList.add(this.settingsCarousel.arrowPrevSpanClass);
     const galleryArrowElementPrevIcon = document.createElement('i');
     galleryArrowElementPrev.append(galleryArrowElementPrevIcon);
-    galleryArrowElementPrevIcon.classList.add(this.settings.arrowIconClass1);
-    galleryArrowElementPrevIcon.classList.add(this.settings.arrowPrevIconClass2);
+    galleryArrowElementPrevIcon.classList.add(this.settingsCarousel.arrowIconClass1);
+    galleryArrowElementPrevIcon.classList.add(this.settingsCarousel.arrowPrevIconClass2);
     galleryArrowElementPrev.addEventListener('click', () => {
       this.getPrevImage(this.currentImgIndex, this.images);
     });
@@ -136,11 +136,11 @@ const gallery = {
   createArrowRight() {
     // Создаем правую картинку-стрелку слайдера, ставим им класс, src и добавляем в контейнер-обертку, навешиваем событие на клик.
     const galleryArrowElementNext = document.createElement('span');
-    galleryArrowElementNext.classList.add(this.settings.arrowNextSpanClass);
+    galleryArrowElementNext.classList.add(this.settingsCarousel.arrowNextSpanClass);
     const galleryArrowElementNextIcon = document.createElement('i');
     galleryArrowElementNext.append(galleryArrowElementNextIcon);
-    galleryArrowElementNextIcon.classList.add(this.settings.arrowIconClass1);
-    galleryArrowElementNextIcon.classList.add(this.settings.arrowNextIconClass2);
+    galleryArrowElementNextIcon.classList.add(this.settingsCarousel.arrowIconClass1);
+    galleryArrowElementNextIcon.classList.add(this.settingsCarousel.arrowNextIconClass2);
     galleryArrowElementNext.addEventListener('click', () => {
       this.getNextImage(this.currentImgIndex, this.images);
     });
@@ -149,7 +149,7 @@ const gallery = {
 };
 
 // Инициализируем нашу галерею при загрузке страницы.
-window.onload = () => gallery.init({
+window.onload = () => carousel.init({
   carouselSelector: '.carousel',
   carouselInnerClass: 'carousel__inner',
   currentImageClass: 'carousel__img',

@@ -1,6 +1,6 @@
 'use strict';
 
-const settings = {
+const settingsComments = {
   idContainer: 'comments',
   classCommentApproved: 'approved',
   urlGetAllComments: 'json/comment.list.json',
@@ -10,17 +10,17 @@ const settings = {
 };
 
 const comments = {
-  settings,
+  settingsComments,
   commentEl: null,
   comments: [],
 
   init(userSettings = {}) {
     // Записываем настройки, которые передал пользователь в наши настройки.
-    Object.assign(settings, userSettings);
-    this.commentEl = document.querySelector(`#${settings.idContainer}`);
+    Object.assign(settingsComments, userSettings);
+    this.commentEl = document.querySelector(`#${settingsComments.idContainer}`);
     this.commentEl.addEventListener('click', this.btnClickHandler.bind(this));
     let xhr = new XMLHttpRequest();
-    xhr.open('GET', this.settings.urlGetAllComments, true);
+    xhr.open('GET', this.settingsComments.urlGetAllComments, true);
     let that = this;
     xhr.onload = function () {
       if (this.status === 200) {
@@ -48,7 +48,7 @@ const comments = {
   approve(target) {
     let that = this;
     let xhr = new XMLHttpRequest();
-    xhr.open('GET', that.settings.urlApprovalComment, true);
+    xhr.open('GET', that.settingsComments.urlApprovalComment, true);
     xhr.onload = function () {
       if (this.status === 200) {
         let comment = target.closest('.comments__comment');
@@ -63,7 +63,7 @@ const comments = {
   remove(target) {
     let that = this;
     let xhr = new XMLHttpRequest();
-    xhr.open('GET', that.settings.urlApprovalComment, true);
+    xhr.open('GET', that.settingsComments.urlApprovalComment, true);
     xhr.onload = function () {
       if (this.status === 200) {
         let comment = target.closest('.comments__comment');
@@ -83,10 +83,10 @@ const comments = {
         const comment = new Comment(
           obj.id_comment,
           obj.text,
-          `${this.settings.idContainer}__comment`,
-          `${this.settings.idContainer}__message`,
-          `${this.settings.idContainer}__btn_delete`,
-          `${this.settings.idContainer}__btn_approve`);
+          `${this.settingsComments.idContainer}__comment`,
+          `${this.settingsComments.idContainer}__message`,
+          `${this.settingsComments.idContainer}__btn_delete`,
+          `${this.settingsComments.idContainer}__btn_approve`);
 
         comment.render(this.commentEl);
       }
