@@ -122,29 +122,29 @@ const carousel = {
    */
   createArrowLeft() {
     // Создаем левую картинку-стрелку слайдера, ставим им класс, src и добавляем в контейнер-обертку, навешиваем событие на клик.
-    const galleryArrowElementPrev = document.createElement('span');
-    galleryArrowElementPrev.classList.add(this.settingsCarousel.arrowPrevSpanClass);
-    const galleryArrowElementPrevIcon = document.createElement('i');
-    galleryArrowElementPrev.append(galleryArrowElementPrevIcon);
-    galleryArrowElementPrevIcon.classList.add(this.settingsCarousel.arrowIconClass1);
-    galleryArrowElementPrevIcon.classList.add(this.settingsCarousel.arrowPrevIconClass2);
-    galleryArrowElementPrev.addEventListener('click', () => {
+    const carouselArrowElementPrev = document.createElement('span');
+    carouselArrowElementPrev.classList.add(this.settingsCarousel.arrowPrevSpanClass);
+    const carouselArrowElementPrevIcon = document.createElement('i');
+    carouselArrowElementPrev.append(carouselArrowElementPrevIcon);
+    carouselArrowElementPrevIcon.classList.add(this.settingsCarousel.arrowIconClass1);
+    carouselArrowElementPrevIcon.classList.add(this.settingsCarousel.arrowPrevIconClass2);
+    carouselArrowElementPrev.addEventListener('click', () => {
       this.getPrevImage(this.currentImgIndex, this.images);
     });
-    this.carouselInner.append(galleryArrowElementPrev);
+    this.carouselInner.append(carouselArrowElementPrev);
   },
   createArrowRight() {
     // Создаем правую картинку-стрелку слайдера, ставим им класс, src и добавляем в контейнер-обертку, навешиваем событие на клик.
-    const galleryArrowElementNext = document.createElement('span');
-    galleryArrowElementNext.classList.add(this.settingsCarousel.arrowNextSpanClass);
-    const galleryArrowElementNextIcon = document.createElement('i');
-    galleryArrowElementNext.append(galleryArrowElementNextIcon);
-    galleryArrowElementNextIcon.classList.add(this.settingsCarousel.arrowIconClass1);
-    galleryArrowElementNextIcon.classList.add(this.settingsCarousel.arrowNextIconClass2);
-    galleryArrowElementNext.addEventListener('click', () => {
+    const carouselArrowElementNext = document.createElement('span');
+    carouselArrowElementNext.classList.add(this.settingsCarousel.arrowNextSpanClass);
+    const carouselArrowElementNextIcon = document.createElement('i');
+    carouselArrowElementNext.append(carouselArrowElementNextIcon);
+    carouselArrowElementNextIcon.classList.add(this.settingsCarousel.arrowIconClass1);
+    carouselArrowElementNextIcon.classList.add(this.settingsCarousel.arrowNextIconClass2);
+    carouselArrowElementNext.addEventListener('click', () => {
       this.getNextImage(this.currentImgIndex, this.images);
     });
-    this.carouselInner.append(galleryArrowElementNext);
+    this.carouselInner.append(carouselArrowElementNext);
   },
 };
 
