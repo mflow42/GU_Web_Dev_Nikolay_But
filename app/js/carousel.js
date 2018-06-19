@@ -1,6 +1,5 @@
 "use strict";
 
-
 /**
  * @property {Object} settings Объект с настройками галереи.
  * @property {string} settings.carouselSelector Селектор обертки для миниатюр галереи.
@@ -15,15 +14,15 @@
  * @property {string} settings.openedImageArrowNextClass Класс правой картинки-стрелки слайдера.
  */
 const settingsCarousel = {
-  carouselSelector: null,
-  carouselInnerClass: null,
-  currentImageClass: null,
-  arrowPrevSpanClass: null,
-  arrowNextSpanClass: null,
-  arrowIconClass1: null,
-  arrowPrevIconClass2: null,
-  arrowNextIconClass2: null,
-  imagesJSON: null,
+  carouselSelector: '.carousel',
+  carouselInnerClass: 'carousel__inner',
+  currentImageClass: 'carousel__img',
+  arrowPrevSpanClass: 'carousel__inner_left-arrow',
+  arrowNextSpanClass: 'carousel__inner_right-arrow',
+  arrowIconClass1: 'fas',
+  arrowPrevIconClass2: 'fa-angle-left',
+  arrowNextIconClass2: 'fa-angle-right',
+  imagesJSON: 'json/carousel.json',
 };
 
 const carousel = {
@@ -31,7 +30,7 @@ const carousel = {
   images: [],
   currentImgSrc: 'img/carousel/carousel-img1.jpg',
   currentImgIndex: 0,
-  carousel: null,
+  carouselEl: null,
   carouselInner: null,
   currentImg: null,
 
@@ -42,8 +41,11 @@ const carousel = {
 
 
   init(userSettings = {}) {
+    console.log('asd');
+
     // Записываем настройки, которые передал пользователь в наши настройки.
-    Object.assign(this.settingsCarousel, userSettings);
+    Object.assign(settingsCarousel, userSettings);
+
     let xhrImgs = new XMLHttpRequest();
     xhrImgs.open('GET', this.settingsCarousel.imagesJSON, false);
     let savedThis = this;
@@ -56,16 +58,17 @@ const carousel = {
       }
     };
     xhrImgs.send();
+
     this.buildHtml();
     this.createArrowLeft();
     this.createArrowRight();
   },
 
   buildHtml() {
-    this.carousel = document.querySelector(this.settingsCarousel.carouselSelector);
+    this.carouselEl = document.querySelector(this.settingsCarousel.carouselSelector);
     this.carouselInner = document.createElement('div');
     this.carouselInner.classList.add(this.settingsCarousel.carouselInnerClass)
-    this.carousel.append(this.carouselInner);
+    this.carouselEl.append(this.carouselInner);
     this.currentImg = this.loadImage();
   },
   /**
@@ -75,8 +78,6 @@ const carousel = {
    */
   getNextImage() {
     // Если картинки кончились ставим индекс на 0
-    console.log(this.images);
-
     if (this.images[this.currentImgIndex + 1] === undefined) {
       this.currentImgIndex = 0;
       this.currentImg.src = this.images[this.currentImgIndex].src;
@@ -149,14 +150,4 @@ const carousel = {
 };
 
 // Инициализируем нашу галерею при загрузке страницы.
-window.onload = () => carousel.init({
-  carouselSelector: '.carousel',
-  carouselInnerClass: 'carousel__inner',
-  currentImageClass: 'carousel__img',
-  arrowPrevSpanClass: 'carousel__inner_left-arrow',
-  arrowNextSpanClass: 'carousel__inner_right-arrow',
-  arrowIconClass1: 'fas',
-  arrowPrevIconClass2: 'fa-angle-left',
-  arrowNextIconClass2: 'fa-angle-right',
-  imagesJSON: 'json/carousel.json',
-});
+window.onload = () => carousel.init();

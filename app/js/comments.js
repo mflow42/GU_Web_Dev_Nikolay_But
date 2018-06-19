@@ -20,8 +20,8 @@ const comments = {
     this.commentEl = document.querySelector(`#${settingsComments.idContainer}`);
     this.commentEl.addEventListener('click', this.btnClickHandler.bind(this));
     let xhr = new XMLHttpRequest();
-    xhr.open('GET', this.settingsComments.urlGetAllComments, true);
     let that = this;
+    xhr.open('GET', this.settingsComments.urlGetAllComments, true);
     xhr.onload = function () {
       if (this.status === 200) {
         let response = JSON.parse(this.responseText);
@@ -74,12 +74,42 @@ const comments = {
   },
 
 
-  add() {},
+  add(elem) {
+    let userNameInput = $(elem).siblings(`#nameUser`);
+    let userMessageInput = $(elem).siblings(`#commentUser`);
+    let userName = userNameInput.val();
+    let userMessage = userMessageInput.val();
+    if (userName && userMessage) {
+      let userId = Math.floor(Math.random() * 10 * userName.length);
+      this.ajax({
+        url: this.settings.urlAddComment,
+        data: {
+          id_user: userId,
+          text: userMessage
+        },
+        success: data => {
+          (function (data, elem, arrComments) {
+            if (data.result && data.result === 1) {
+              const newComment = new Comment(userId, userMessage);
+              newComment.render(elem);
+              arrComments.push({
+                "id_comment": userId,
+                "text": userMessage
+              });
+              userNameInput.val('');
+              userMessageInput.val('');
+            } else if (data.result === 0) {
+              alert(`Сервер вернул ошибку: ${data.error_message}`);
+            }
+          }(data, this.$elCommentBlock, this.arrAllComments))
+        }
+      });
+    }
+  },
 
   render() {
     if (this.comments.length > 0) {
       for (const obj of this.comments) {
-
         const comment = new Comment(
           obj.id_comment,
           obj.text,
@@ -87,7 +117,6 @@ const comments = {
           `${this.settingsComments.idContainer}__message`,
           `${this.settingsComments.idContainer}__btn_delete`,
           `${this.settingsComments.idContainer}__btn_approve`);
-
         comment.render(this.commentEl);
       }
     }
