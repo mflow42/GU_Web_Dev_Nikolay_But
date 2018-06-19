@@ -1,6 +1,6 @@
 "use strict";
 
-/** 
+/**
  * @property {Object} settings Объект с настройками галереи.
  * @property {string} settings.carouselSelector Селектор обертки для миниатюр галереи.
  * @property {string} settings.currentImageSelector Класс для обертки открытой картинки.
@@ -13,7 +13,7 @@
  * @property {string} settings.openedImageArrowNextIcon Путь до правой картинки-стрелки слайдера.
  * @property {string} settings.openedImageArrowNextClass Класс правой картинки-стрелки слайдера.
  */
-const gallery = { 
+const gallery = {
   settings: {
     carouselSelector: '.carousel',
     carouselInnerClass: 'carousel__inner',
@@ -72,7 +72,7 @@ const gallery = {
   getNextImage() {
     // Если картинки кончились ставим индекс на 0
     console.log(this.images);
-    
+
     if (this.images[this.currentImgIndex + 1] === undefined) {
       this.currentImgIndex = 0;
       this.currentImg.src = this.images[this.currentImgIndex].src;

@@ -915,7 +915,7 @@ body {
     left: -30px;
     width: 50px;
     height: 50px;
-    background: url("../img/Forma%201.png") center no-repeat;
+    background: url("../img/Forma1.png") center no-repeat;
   }
   .feature-item:nth-child(2):before {
     content: "";
@@ -925,7 +925,7 @@ body {
     left: -30px;
     width: 50px;
     height: 50px;
-    background: url("../img/Forma%202.png") center no-repeat;
+    background: url("../img/Forma2.png") center no-repeat;
   }
   .feature-item:nth-child(3):before {
     content: "";
@@ -935,7 +935,7 @@ body {
     left: -30px;
     width: 50px;
     height: 50px;
-    background: url("../img/Forma%203.png") center no-repeat;
+    background: url("../img/Forma3.png") center no-repeat;
   }
 }
 
@@ -950,7 +950,7 @@ body {
       -ms-flex-pack: center;
           justify-content: center;
   margin: 0 auto;
-  background: url("../img/Layer%20101.png") center 100% no-repeat;
+  background: url("../img/Layer101.png") center 100% no-repeat;
 }
 .subscribe:before {
   content: "";
@@ -1030,7 +1030,7 @@ body {
   .subscribe-slider .quote-block__quote:before {
     position: absolute;
     display: block;
-    content: url("../img/Layer%20100.png");
+    content: url("../img/Layer100.png");
     top: 0;
     right: 100%;
   }
@@ -1620,7 +1620,7 @@ body {
   padding: 16px;
 }
 .cart__icon {
-  background: url("../img/Forma%200.png") center no-repeat;
+  background: url("../img/Forma0.png") center no-repeat;
   background-size: 100%;
   -webkit-transition: drop-shadow .2s linear, -webkit-transform .2s linear;
   transition: drop-shadow .2s linear, -webkit-transform .2s linear;
@@ -3003,17 +3003,17 @@ main {
 .feature-box__img1 {
   width: 50px;
   height: 50px;
-  background: url("../img/Forma%201.png") center no-repeat;
+  background: url("../img/Forma1.png") center no-repeat;
 }
 .feature-box__img2 {
   width: 50px;
   height: 50px;
-  background: url("../img/Forma%202.png") center no-repeat;
+  background: url("../img/Forma2.png") center no-repeat;
 }
 .feature-box__img3 {
   width: 50px;
   height: 50px;
-  background: url("../img/Forma%203.png") center no-repeat;
+  background: url("../img/Forma3.png") center no-repeat;
 }
 .feature-box__title {
   margin-top: 20px;
@@ -3175,7 +3175,7 @@ main {
     background-color: #222;
   }
   .mob-header-block__wrapper_cart:hover .cart__icon {
-    background: url("../img/Forma%200.png") center no-repeat;
+    background: url("../img/Forma0.png") center no-repeat;
   }
   .mob-header-block__menu:hover .mob-navbar {
     visibility: visible;
@@ -3263,7 +3263,7 @@ main {
   }
 
   .cart__icon {
-    background: url("../img/Forma%206.png") center no-repeat;
+    background: url("../img/Forma6.png") center no-repeat;
     position: relative;
   }
   .cart__icon_badge {
@@ -3405,21 +3405,21 @@ main {
     height: 100%;
   }
   .banner__man {
-    background: url("../img/Layer%2030.png") no-repeat center;
+    background: url("../img/Layer30.png") no-repeat center;
     background-size: 100%;
   }
   .banner__accessories {
     width: 100%;
     height: 180px;
-    background: url("../img/Layer%2045.png") no-repeat center;
+    background: url("../img/Layer45.png") no-repeat center;
     background-size: 100%;
   }
   .banner__women {
-    background: url("../img/Layer%2043.png") no-repeat center;
+    background: url("../img/Layer43.png") no-repeat center;
     background-size: 100%;
   }
   .banner__kids {
-    background: url("../img/Layer%2044.png") no-repeat center;
+    background: url("../img/Layer44.png") no-repeat center;
     background-size: 100%;
   }
 
@@ -3557,19 +3557,19 @@ main {
   .feature-item__img1 {
     width: 50px;
     height: 50px;
-    background: url("../img/Forma%201.png") center no-repeat;
+    background: url("../img/Forma1.png") center no-repeat;
     margin-bottom: 15px;
   }
   .feature-item__img2 {
     width: 50px;
     height: 50px;
-    background: url("../img/Forma%202.png") center no-repeat;
+    background: url("../img/Forma2.png") center no-repeat;
     margin-bottom: 15px;
   }
   .feature-item__img3 {
     width: 50px;
     height: 50px;
-    background: url("../img/Forma%203.png") center no-repeat;
+    background: url("../img/Forma3.png") center no-repeat;
     margin-bottom: 15px;
   }
 
@@ -3653,7 +3653,7 @@ main {
     -webkit-box-flex: 0;
         -ms-flex: 0 1 100%;
             flex: 0 1 100%;
-    background: url("../img/Layer%20101.png") no-repeat;
+    background: url("../img/Layer101.png") no-repeat;
     background-position: center;
     background-size: cover;
     height: 438px;

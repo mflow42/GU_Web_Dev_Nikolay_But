@@ -49,8 +49,10 @@ const comments = {
     let that = this;
     let xhr = new XMLHttpRequest();
     xhr.open('GET', that.settings.urlApprovalComment, true);
-    xhr.onload = function () {
+    xhr.onload = function (event) {
       if (this.status === 200) {
+console.log(event);
+
         let comment = target.closest('.comments__comment');
         comment.classList.add('approved');
         comment.dataset.approved = true;
