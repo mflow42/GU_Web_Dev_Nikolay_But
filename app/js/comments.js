@@ -7,6 +7,8 @@ const settingsComments = {
   urlDelComment: 'json/comment.delete.json',
   urlApprovalComment: 'json/comment.submit.json',
   urlAddComment: 'json/comment.add.json',
+  classForm: 'comments__form',
+
 };
 
 const comments = {
@@ -107,6 +109,34 @@ const comments = {
     }
   },
 
+  makeForm() {
+    const containerForm = document.createElement('form');
+    containerForm.classList.add(this.classForm);
+    containerForm.name = 'commentForm';
+    const inputTextArea = document.createElement('textarea');
+    inputTextArea.name = 'commentForm';
+    // inputTextArea.style.resize = 'none';
+    inputTextArea.style.width = '100%';
+    inputTextArea.style.height = 'auto';
+    //применяем метод которые увеличивает высоту и задает высоту по умолчанию
+    this.textarea_height(inputTextArea, 5);
+    containerForm.append(inputTextArea);
+    this.commentEl.append(containerForm);
+  },
+
+  textarea_height(inputTextArea, rowsDefault) {
+    // Установим дефолтную высоту textarea
+    inputTextArea.rows = rowsDefault;
+    //создадим метод, который 
+    const stretchHeight = function() {
+      let counter = this.value.split("\n").length;
+      if (counter <= rowsDefault) return;
+      else if (counter > rowsDefault) this.rows = counter;
+    };
+    //повесим обработчик на отслеживание првышения высоты по умолчанию и если да то увеличиваем rows у textarea
+    inputTextArea.addEventListener('input', stretchHeight);
+  },
+
   render() {
     if (this.comments.length > 0) {
       for (const obj of this.comments) {
@@ -120,6 +150,7 @@ const comments = {
         comment.render(this.commentEl);
       }
     }
+    this.makeForm();
   },
 };
 
