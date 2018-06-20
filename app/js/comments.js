@@ -198,7 +198,7 @@ const comments = {
     //добавляем стиль ошибки на textarea
     textArea.classList.add(this.settingsComments.classErrorTextarea);
     //создаем span
-    const hint = document.createElement('span');
+    const hint = document.createElement('span'); 
     //вкладываем в него текст
     hint.textContent = 'Text must contain at least 1 character';
     //добавляем класс
