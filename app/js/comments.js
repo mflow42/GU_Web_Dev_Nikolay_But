@@ -7,7 +7,12 @@ const settingsComments = {
   urlDelComment: 'json/comment.delete.json',
   urlApprovalComment: 'json/comment.submit.json',
   urlAddComment: 'json/comment.add.json',
-  classForm: 'comments__form',
+  classForm: `comments__form`,
+  classTextarea: `comments__textarea`,
+  classErrorTextarea: 'error_textarea',
+  classErrorText: 'error_text',
+  classFormSubmitBtn: `comments__submit`,
+  commentRegexp: '.',
 };
 
 const comments = {
@@ -124,8 +129,10 @@ const comments = {
     //навешиваем обработчик события отправки формы
     containerForm.addEventListener('submit', (event) => {
       event.preventDefault();
-      if (!this.textAreaEl.value) return;
-      
+      console.log(this);
+
+      if (this.isError(this.textAreaEl, this.settingsComments.commentRegexp)) return this.showErrorMessage(this.textAreaEl);
+
       let that = this;
       let xhr = new XMLHttpRequest();
       xhr.open('GET', that.settingsComments.urlAddComment, true);
@@ -138,7 +145,7 @@ const comments = {
 
       //как заглушка просто добавляем в массив с комментами новый коммент
       this.comments.push({
-        id_comment: this.comments.length+1,
+        id_comment: this.comments.length + 1,
         text: this.textAreaEl.value,
       });
       this.render();
@@ -157,9 +164,7 @@ const comments = {
     //создаем textarea
     const inputTextArea = document.createElement('textarea');
     inputTextArea.name = 'commentFormName';
-    inputTextArea.style.resize = 'none';
-    inputTextArea.style.width = '100%';
-    inputTextArea.style.height = 'auto';
+    inputTextArea.classList.add(this.settingsComments.classTextarea);
     this.textAreaEl = inputTextArea;
 
     //применяем метод которые увеличивает высоту и задает высоту по умолчанию
@@ -178,19 +183,30 @@ const comments = {
     containerForm.append(submitBtn);
     //добавляем обертку на страницу
     this.commentEl.append(containerForm);
-    
-    isEmpty(textArea) {
-      if (!!textArea.value) {
-        textArea.classList.add();
-        const hint = document.createElement('span');
-        hint.textContent = 'Text must contain at least 1 character';
-        hint.style.color = 'red';
-        textArea.parentElement.append(hint);
-      };
-    };
-    
   },
-
+  
+  isError(textArea, userRegexp) {
+    //создаем регулярку из переданного в настройках
+    const regexp = new RegExp(`${userRegexp}`, `gi`);
+    //возвращаем результат проверки - если все ок, то false, если проверка не прошла - true
+    return !regexp.test(textArea.value);
+  },
+  
+  showErrorMessage(textArea) {
+    //проверяем создана и висит ли уже ошибка
+    if (textArea.parentElement.querySelector(`.${this.settingsComments.classErrorText}`)) return;
+    //добавляем стиль ошибки на textarea
+    textArea.classList.add(this.settingsComments.classErrorTextarea);
+    //создаем span
+    const hint = document.createElement('span');
+    //вкладываем в него текст
+    hint.textContent = 'Text must contain at least 1 character';
+    //добавляем класс
+    hint.classList.add(this.settingsComments.classErrorText)
+    //вставляем элемент на страницу
+    textArea.parentElement.append(hint);
+  },
+  
   textareaHandleHeight(inputTextArea, rowsDefault) {
     // Установим дефолтную высоту textarea
     inputTextArea.rows = rowsDefault;
@@ -207,7 +223,7 @@ const comments = {
   render() {
     //предварительно очистим внутренности - нужно для перерисовки
     this.commentEl.innerHTML = '';
-    
+
     if (this.comments.length > 0) {
       for (const obj of this.comments) {
         const comment = new Comment(

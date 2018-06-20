@@ -3097,6 +3097,38 @@ main {
   background-color: #58a84c;
   color: #fff;
 }
+.comments__submit {
+  font-size: 16px;
+  padding: 10px;
+  text-transform: uppercase;
+  outline: none;
+  cursor: pointer;
+  border: 1px solid #58a84c;
+  background-color: #fff;
+  color: #58a84c;
+}
+.comments__submit:hover {
+  background-color: #58a84c;
+  color: #fff;
+}
+.comments__textarea {
+  padding: 10px;
+  resize: none;
+  width: 100%;
+  height: auto;
+  outline: none;
+}
+.comments__textarea:focus {
+  -webkit-box-shadow: inset #4d4d4d 0px 0px 5px;
+          box-shadow: inset #4d4d4d 0px 0px 5px;
+}
+.comments .error_textarea {
+  -webkit-box-shadow: inset red 0px 0px 5px;
+          box-shadow: inset red 0px 0px 5px;
+}
+.comments .error_text {
+  color: red;
+}
 
 @media screen and (min-width: 1141px) {
   .header-bar-first-mobile {
