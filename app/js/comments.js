@@ -71,14 +71,19 @@ const comments = {
   remove(target) {
     let that = this;
     let xhr = new XMLHttpRequest();
-    xhr.open('GET', that.settingsComments.urlApprovalComment, true);
+    xhr.open('GET', that.settingsComments.urlDelComment, true);
     xhr.onload = function () {
       if (this.status === 200) {
-        let comment = target.closest('.comments__comment');
-        comment.remove();
+        const comment = target.closest('.comments__comment');
+        let foundIndexComment = that.comments.findIndex((item) => item.id_comment === parseInt(comment.dataset.id));
+        that.comments.splice(foundIndexComment, 1);
+        // target.remove();
+        console.log();
+        
       }
     }
     xhr.send();
+    this.render();
   },
 
   makeForm() {
@@ -94,7 +99,6 @@ const comments = {
 
     //создаем функцию отправки нового комментария
     const add = (event) => {
-
       const showErrorMessage = (textArea) => {
         //проверяем создана и висит ли уже ошибка
         if (textArea.parentElement.querySelector(`.${this.settingsComments.classErrorText}`)) return;
@@ -109,7 +113,7 @@ const comments = {
         //вставляем элемент на страницу
         textArea.parentElement.append(hint);
       };
-      
+
       const isError = (textArea, userRegexp) => {
         //создаем регулярку из переданного в настройках
         const regexp = new RegExp(`${userRegexp}`, `gi`);
@@ -117,8 +121,11 @@ const comments = {
         return !regexp.test(textArea.value);
       };
       event.preventDefault();
+
       //проверим на наличие ошибок textarea (пока просто должен быть хотя бы 1 символ)
       if (isError(this.textAreaEl, this.settingsComments.commentRegexp)) {
+        //отменяем отправук формы по умолчанию
+        event.preventDefault();
         return showErrorMessage(this.textAreaEl);
       }
       let that = this;
@@ -130,9 +137,12 @@ const comments = {
         }
       };
       xhr.send();
+
       //как заглушка просто добавляем в массив с комментами новый коммент
       this.comments.push({
-        id_comment: this.comments.length + 1,
+        //в айди запишем текущую дату, потом при большой нагрузке можно добавлять после нее имя пользователя для пущей 
+        //уникальности
+        id_comment: Date.now(),
         text: this.textAreaEl.value,
       });
       this.render();
@@ -169,7 +179,7 @@ const comments = {
       //повесим обработчик на отслеживание првышения высоты по умолчанию и если да то увеличиваем rows у textarea
       inputTextArea.addEventListener('input', stretchHeight);
     };
-    
+
     //применяем метод которые увеличивает высоту и задает высоту по умолчанию
     textareaHandleHeight(inputTextArea, 5);
 
@@ -187,7 +197,7 @@ const comments = {
     this.commentEl.append(containerForm);
   },
 
-  
+
 
   render() {
     //предварительно очистим внутренности - нужно для перерисовки
