@@ -14,6 +14,8 @@ const comments = {
   settingsComments,
   commentEl: null,
   comments: [],
+  textAreaEl: null,
+  formEl: null,
 
   init(userSettings = {}) {
     // Записываем настройки, которые передал пользователь в наши настройки.
@@ -113,13 +115,35 @@ const comments = {
     const containerForm = document.createElement('form');
     containerForm.classList.add(this.settingsComments.classForm);
     containerForm.name = 'commentForm';
-    
+    containerForm.id = 'commentFormId';
+    containerForm.method = 'GET';
+    containerForm.action = '#';
+    //запомним созданный элемент в переменной
+    this.formEl = containerForm;
+
     //навешиваем обработчик события отправки формы
-    containerForm.addEventListener('submit', function(event) {
+    containerForm.addEventListener('submit', (event) => {
       event.preventDefault();
-      console.log(this);
+      if (!this.textAreaEl.value) return;
+      
+      let that = this;
+      let xhr = new XMLHttpRequest();
+      xhr.open('GET', that.settingsComments.urlAddComment, true);
+      xhr.onload = function () {
+        if (this.status === 200) {
+          console.log(JSON.parse(this.response));
+        }
+      }
+      xhr.send();
+
+      //как заглушка просто добавляем в массив с комментами новый коммент
+      this.comments.push({
+        id_comment: this.comments.length+1,
+        text: this.textAreaEl.value,
+      });
+      this.render();
     })
-    
+
     //создаем заголовок h3
     const formTitle = document.createElement('h3');
     formTitle.classList.add(this.settingsComments.classFormTitle);
@@ -136,6 +160,7 @@ const comments = {
     inputTextArea.style.resize = 'none';
     inputTextArea.style.width = '100%';
     inputTextArea.style.height = 'auto';
+    this.textAreaEl = inputTextArea;
 
     //применяем метод которые увеличивает высоту и задает высоту по умолчанию
     this.textareaHandleHeight(inputTextArea, 5);
@@ -144,7 +169,7 @@ const comments = {
     const submitBtn = document.createElement('button');
     submitBtn.classList.add(this.settingsComments.classFormSubmitBtn);
     submitBtn.textContent = 'Submit comment';
-    
+
 
     //вставляем все элементы в обертку
     containerForm.append(formTitle);
@@ -153,6 +178,17 @@ const comments = {
     containerForm.append(submitBtn);
     //добавляем обертку на страницу
     this.commentEl.append(containerForm);
+    
+    isEmpty(textArea) {
+      if (!!textArea.value) {
+        textArea.classList.add();
+        const hint = document.createElement('span');
+        hint.textContent = 'Text must contain at least 1 character';
+        hint.style.color = 'red';
+        textArea.parentElement.append(hint);
+      };
+    };
+    
   },
 
   textareaHandleHeight(inputTextArea, rowsDefault) {
@@ -169,6 +205,9 @@ const comments = {
   },
 
   render() {
+    //предварительно очистим внутренности - нужно для перерисовки
+    this.commentEl.innerHTML = '';
+    
     if (this.comments.length > 0) {
       for (const obj of this.comments) {
         const comment = new Comment(

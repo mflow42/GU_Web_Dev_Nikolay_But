@@ -1,34 +1,34 @@
 'use strict';
 
 class Comment {
-  constructor(commentId, message, classContainer, classMessage, classDelBtn, classApproveBtn) {
-    this.commentId = commentId;
-    this.message = message;
+  constructor(id_comment, text, classContainer, classMessage, classDelBtn, classApprovelBtn) {
+    this.id_comment = id_comment;
+    this.text = text;
     this.classContainer = classContainer;
     this.classMessage = classMessage;
     this.classDelBtn = classDelBtn;
-    this.classApproveBtn = classApproveBtn;
+    this.classApprovelBtn = classApprovelBtn;
   }
 
   render(commentEl) {
     const containerComment = document.createElement('div');
     containerComment.classList.add(this.classContainer);
-    containerComment.dataset.id = this.commentId;
+    containerComment.dataset.id = this.id_comment;
     containerComment.dataset.approved = false;
 
     const messageComment = document.createElement('p');
     messageComment.classList.add(this.classMessage);
-    messageComment.textContent = this.message;
+    messageComment.textContent = this.text;
 
     const approveBtnComment = document.createElement('button');
-    approveBtnComment.classList.add(this.classApproveBtn);
-    approveBtnComment.dataset.id = this.commentId;
+    approveBtnComment.classList.add(this.classApprovelBtn);
+    approveBtnComment.dataset.id = this.id_comment;
     approveBtnComment.dataset.type = 'approve';
     approveBtnComment.textContent = 'approve';
 
     const delBtnComment = document.createElement('button');
     delBtnComment.classList.add(this.classDelBtn);
-    delBtnComment.dataset.id = this.commentId;
+    delBtnComment.dataset.id = this.id_comment;
     delBtnComment.dataset.type = 'delete';
     delBtnComment.textContent = 'delete';
 
