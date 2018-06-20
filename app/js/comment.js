@@ -1,13 +1,13 @@
 'use strict';
 
 class Comment {
-  constructor(commentId, message, classContainer, classMessage, classDelBtn, classApprovelBtn) {
+  constructor(commentId, message, classContainer, classMessage, classDelBtn, classApproveBtn) {
     this.commentId = commentId;
     this.message = message;
     this.classContainer = classContainer;
     this.classMessage = classMessage;
     this.classDelBtn = classDelBtn;
-    this.classApprovelBtn = classApprovelBtn;
+    this.classApproveBtn = classApproveBtn;
   }
 
   render(commentEl) {
@@ -21,7 +21,7 @@ class Comment {
     messageComment.textContent = this.message;
 
     const approveBtnComment = document.createElement('button');
-    approveBtnComment.classList.add(this.classApprovelBtn);
+    approveBtnComment.classList.add(this.classApproveBtn);
     approveBtnComment.dataset.id = this.commentId;
     approveBtnComment.dataset.type = 'approve';
     approveBtnComment.textContent = 'approve';

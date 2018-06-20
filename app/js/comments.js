@@ -8,7 +8,6 @@ const settingsComments = {
   urlApprovalComment: 'json/comment.submit.json',
   urlAddComment: 'json/comment.add.json',
   classForm: 'comments__form',
-
 };
 
 const comments = {
@@ -110,25 +109,57 @@ const comments = {
   },
 
   makeForm() {
+    //создаем обертку для модуля комментариев
     const containerForm = document.createElement('form');
-    containerForm.classList.add(this.classForm);
+    containerForm.classList.add(this.settingsComments.classForm);
     containerForm.name = 'commentForm';
+    
+    //навешиваем обработчик события отправки формы
+    containerForm.addEventListener('submit', function(event) {
+      event.preventDefault();
+      console.log(this);
+    })
+    
+    //создаем заголовок h3
+    const formTitle = document.createElement('h3');
+    formTitle.classList.add(this.settingsComments.classFormTitle);
+    formTitle.textContent = 'Add comment:';
+
+    //создаем лейбл для textarea
+    const inputTextAreaLabel = document.createElement('label');
+    inputTextAreaLabel.for = 'commentFormName';
+    inputTextAreaLabel.textContent = `input here and click 'submit' button`;
+
+    //создаем textarea
     const inputTextArea = document.createElement('textarea');
-    inputTextArea.name = 'commentForm';
-    // inputTextArea.style.resize = 'none';
+    inputTextArea.name = 'commentFormName';
+    inputTextArea.style.resize = 'none';
     inputTextArea.style.width = '100%';
     inputTextArea.style.height = 'auto';
+
     //применяем метод которые увеличивает высоту и задает высоту по умолчанию
-    this.textarea_height(inputTextArea, 5);
+    this.textareaHandleHeight(inputTextArea, 5);
+
+    //создаем кнопку отправки комментария
+    const submitBtn = document.createElement('button');
+    submitBtn.classList.add(this.settingsComments.classFormSubmitBtn);
+    submitBtn.textContent = 'Submit comment';
+    
+
+    //вставляем все элементы в обертку
+    containerForm.append(formTitle);
+    containerForm.append(inputTextAreaLabel);
     containerForm.append(inputTextArea);
+    containerForm.append(submitBtn);
+    //добавляем обертку на страницу
     this.commentEl.append(containerForm);
   },
 
-  textarea_height(inputTextArea, rowsDefault) {
+  textareaHandleHeight(inputTextArea, rowsDefault) {
     // Установим дефолтную высоту textarea
     inputTextArea.rows = rowsDefault;
     //создадим метод, который 
-    const stretchHeight = function() {
+    const stretchHeight = function () {
       let counter = this.value.split("\n").length;
       if (counter <= rowsDefault) return;
       else if (counter > rowsDefault) this.rows = counter;
