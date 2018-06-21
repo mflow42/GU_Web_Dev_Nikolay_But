@@ -44,7 +44,7 @@ const comments = {
 
   btnClickHandler(event) {
     if (event.target.dataset.type === 'delete') {
-      this.remove(event.target);
+      this.delete(event.target);
     } else if (event.target.dataset.type === 'approve') {
       this.approve(event.target);
     } else if (event.target.dataset.type === 'add') {
@@ -68,7 +68,7 @@ const comments = {
     xhr.send();
   },
 
-  remove(target) {
+  delete(target) {
     let that = this;
     let xhr = new XMLHttpRequest();
     xhr.open('GET', that.settingsComments.urlDelComment, true);
@@ -77,13 +77,10 @@ const comments = {
         const comment = target.closest('.comments__comment');
         let foundIndexComment = that.comments.findIndex((item) => item.id_comment === parseInt(comment.dataset.id));
         that.comments.splice(foundIndexComment, 1);
-        // target.remove();
-        console.log();
-        
+        that.render();
       }
     }
     xhr.send();
-    this.render();
   },
 
   makeForm() {
@@ -120,12 +117,10 @@ const comments = {
         //возвращаем результат проверки - если все ок, то false, если проверка не прошла - true
         return !regexp.test(textArea.value);
       };
+      //отменяем отправку формы по умолчанию чтобы страница не перезагружалась
       event.preventDefault();
-
       //проверим на наличие ошибок textarea (пока просто должен быть хотя бы 1 символ)
       if (isError(this.textAreaEl, this.settingsComments.commentRegexp)) {
-        //отменяем отправук формы по умолчанию
-        event.preventDefault();
         return showErrorMessage(this.textAreaEl);
       }
       let that = this;
@@ -134,18 +129,17 @@ const comments = {
       xhr.onload = function () {
         if (this.status === 200) {
           console.log(JSON.parse(this.response));
+          //как заглушка просто добавляем в массив с комментами новый коммент
+          that.comments.push({
+            //в айди запишем текущую дату, потом при большой нагрузке можно добавлять после нее имя пользователя для пущей 
+            //уникальности
+            id_comment: Date.now(),
+            text: that.textAreaEl.value,
+          });
+          that.render();
         }
       };
       xhr.send();
-
-      //как заглушка просто добавляем в массив с комментами новый коммент
-      this.comments.push({
-        //в айди запишем текущую дату, потом при большой нагрузке можно добавлять после нее имя пользователя для пущей 
-        //уникальности
-        id_comment: Date.now(),
-        text: this.textAreaEl.value,
-      });
-      this.render();
     };
 
     //навешиваем обработчик события отправки формы
