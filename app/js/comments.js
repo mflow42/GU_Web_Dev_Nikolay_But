@@ -11,8 +11,13 @@ const settingsComments = {
   classTextarea: `comments__textarea`,
   classErrorTextarea: 'error_textarea',
   classErrorText: 'error_text',
-  classFormSubmitBtn: `comments__submit`,
+  classFormSubmitBtn: `__submit`,
   commentRegexp: '.',
+  classComment: '__comment',
+  classCommentApproved: `approved`,
+  classMessage: '__message',
+  classBtnDelete: '__btn_delete',
+  classBtnApprove: '__btn_approve',
 };
 
 const comments = {
@@ -28,15 +33,16 @@ const comments = {
     this.commentEl = document.querySelector(`#${settingsComments.idContainer}`);
     this.commentEl.addEventListener('click', this.btnClickHandler.bind(this));
     let xhr = new XMLHttpRequest();
-    let that = this;
+    let savedThis = this;
+    //true - асинхронный
     xhr.open('GET', this.settingsComments.urlGetAllComments, true);
     xhr.onload = function () {
       if (this.status === 200) {
         let response = JSON.parse(this.responseText);
         response.comments.forEach(el => {
-          that.comments.push(el);
+          savedThis.comments.push(el);
         });
-        that.render();
+        savedThis.render();
       }
     }
     xhr.send();
@@ -54,13 +60,13 @@ const comments = {
   },
 
   approve(target) {
-    let that = this;
+    let savedThis = this;
     let xhr = new XMLHttpRequest();
-    xhr.open('GET', that.settingsComments.urlApprovalComment, true);
+    xhr.open('GET', savedThis.settingsComments.urlApprovalComment, true);
     xhr.onload = function () {
       if (this.status === 200) {
-        let comment = target.closest('.comments__comment');
-        comment.classList.add('approved');
+        let comment = target.closest(`.${savedThis.settingsComments.idContainer}${savedThis.settingsComments.classComment}`);
+        comment.classList.add(savedThis.settingsComments.classCommentApproved);
         comment.dataset.approved = true;
         target.remove();
       }
@@ -69,15 +75,15 @@ const comments = {
   },
 
   delete(target) {
-    let that = this;
+    let savedThis = this;
     let xhr = new XMLHttpRequest();
-    xhr.open('GET', that.settingsComments.urlDelComment, true);
+    xhr.open('GET', savedThis.settingsComments.urlDelComment, true);
     xhr.onload = function () {
       if (this.status === 200) {
         const comment = target.closest('.comments__comment');
-        let foundIndexComment = that.comments.findIndex((item) => item.id_comment === parseInt(comment.dataset.id));
-        that.comments.splice(foundIndexComment, 1);
-        that.render();
+        let foundIndexComment = savedThis.comments.findIndex((item) => item.id_comment === parseInt(comment.dataset.id));
+        savedThis.comments.splice(foundIndexComment, 1);
+        savedThis.render();
       }
     }
     xhr.send();
@@ -123,20 +129,20 @@ const comments = {
       if (isError(this.textAreaEl, this.settingsComments.commentRegexp)) {
         return showErrorMessage(this.textAreaEl);
       }
-      let that = this;
+      let savedThis = this;
       let xhr = new XMLHttpRequest();
-      xhr.open('GET', that.settingsComments.urlAddComment, true);
+      xhr.open('GET', savedThis.settingsComments.urlAddComment, true);
       xhr.onload = function () {
         if (this.status === 200) {
           console.log(JSON.parse(this.response));
           //как заглушка просто добавляем в массив с комментами новый коммент
-          that.comments.push({
-            //в айди запишем текущую дату, потом при большой нагрузке можно добавлять после нее имя пользователя для пущей 
+          savedThis.comments.push({
+            //в айди запишем текущую дату, потом при большой нагрузке можно добавлять после нее имя пользователя для пущей
             //уникальности
             id_comment: Date.now(),
-            text: that.textAreaEl.value,
+            text: savedThis.textAreaEl.value,
           });
-          that.render();
+          savedThis.render();
         }
       };
       xhr.send();
@@ -164,7 +170,7 @@ const comments = {
     const textareaHandleHeight = (inputTextArea, rowsDefault) => {
       // Установим дефолтную высоту textarea
       inputTextArea.rows = rowsDefault;
-      //создадим метод, который 
+      //создадим метод, который
       const stretchHeight = function () {
         let counter = this.value.split("\n").length;
         if (counter <= rowsDefault) return;
@@ -179,7 +185,7 @@ const comments = {
 
     //создаем кнопку отправки комментария
     const submitBtn = document.createElement('button');
-    submitBtn.classList.add(this.settingsComments.classFormSubmitBtn);
+    submitBtn.classList.add(`${this.settingsComments.idContainer}${this.settingsComments.classFormSubmitBtn}`);
     submitBtn.textContent = 'Submit comment';
 
     //вставляем все элементы в обертку
@@ -202,10 +208,12 @@ const comments = {
         const comment = new Comment(
           obj.id_comment,
           obj.text,
-          `${this.settingsComments.idContainer}__comment`,
-          `${this.settingsComments.idContainer}__message`,
-          `${this.settingsComments.idContainer}__btn_delete`,
-          `${this.settingsComments.idContainer}__btn_approve`);
+          obj.approved,
+          `${this.settingsComments.idContainer}${this.settingsComments.classComment}`,
+          `${this.settingsComments.classCommentApproved}`,
+          `${this.settingsComments.idContainer}${this.settingsComments.classMessage}`,
+          `${this.settingsComments.idContainer}${this.settingsComments.classBtnDelete}`,
+          `${this.settingsComments.idContainer}${this.settingsComments.classBtnApprove}`);
         comment.render(this.commentEl);
       }
     }

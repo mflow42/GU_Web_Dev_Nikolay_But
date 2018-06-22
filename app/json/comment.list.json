@@ -2,15 +2,18 @@
   "comments": [
     {
       "id_comment": 1,
-      "text": "Текст отзыва1"
+      "text": "Текст отзыва1",
+      "approved": "false"
     },
     {
       "id_comment": 2,
-      "text": "Текст отзыва2"
+      "text": "Текст отзыва2",
+      "approved": "true"
     },
     {
       "id_comment": 3,
-      "text": "Текст отзыва3"
+      "text": "Текст отзыва3",
+      "approved": "false"
     }
   ]
 }

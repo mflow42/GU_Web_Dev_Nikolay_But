@@ -1,10 +1,12 @@
 'use strict';
 
 class Comment {
-  constructor(id_comment, text, classContainer, classMessage, classDelBtn, classApprovelBtn) {
+  constructor(id_comment, text, approved, classContainer, classContainerApproved, classMessage, classDelBtn, classApprovelBtn) {
     this.id_comment = id_comment;
     this.text = text;
+    this.approved = approved;
     this.classContainer = classContainer;
+    this.classContainerApproved = classContainerApproved;
     this.classMessage = classMessage;
     this.classDelBtn = classDelBtn;
     this.classApprovelBtn = classApprovelBtn;
@@ -14,7 +16,7 @@ class Comment {
     const containerComment = document.createElement('div');
     containerComment.classList.add(this.classContainer);
     containerComment.dataset.id = this.id_comment;
-    containerComment.dataset.approved = false;
+    containerComment.dataset.approved = this.approved;
 
     const messageComment = document.createElement('p');
     messageComment.classList.add(this.classMessage);
@@ -26,15 +28,28 @@ class Comment {
     approveBtnComment.dataset.type = 'approve';
     approveBtnComment.textContent = 'approve';
 
+
+
     const delBtnComment = document.createElement('button');
     delBtnComment.classList.add(this.classDelBtn);
     delBtnComment.dataset.id = this.id_comment;
     delBtnComment.dataset.type = 'delete';
     delBtnComment.textContent = 'delete';
 
-    commentEl.append(containerComment);
+    //добавляем текст коммента в обертку
     containerComment.append(messageComment);
-    containerComment.append(approveBtnComment);
+
+    //Если коммент одобрен то не будем вставлять кнопку одобрения и навесим класс одобрения
+    if (containerComment.dataset.approved === 'true') {
+      containerComment.classList.add(this.classContainerApproved);
+    } else if (containerComment.dataset.approved === 'false') {
+      containerComment.append(approveBtnComment);
+    }
+
+    //Добавим кнопку удаления
     containerComment.append(delBtnComment);
+
+    //вставляем обертку на страницу
+    commentEl.append(containerComment);
   }
 };

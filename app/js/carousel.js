@@ -14,7 +14,7 @@
  * @property {string} settings.openedImageArrowNextClass Класс правой картинки-стрелки слайдера.
  */
 const settingsCarousel = {
-  carouselSelector: '.carousel',
+  carouselSelector: 'carousel',
   carouselInnerClass: 'carousel__inner',
   currentImageClass: 'carousel__img',
   arrowPrevSpanClass: 'carousel__inner_left-arrow',
@@ -27,12 +27,12 @@ const settingsCarousel = {
 
 const carousel = {
   settingsCarousel,
-  images: [],
-  currentImgSrc: 'img/carousel/carousel-img1.jpg',
-  currentImgIndex: 0,
   carouselEl: null,
   carouselInner: null,
   currentImg: null,
+  images: [],
+  currentImgSrc: null,
+  currentImgIndex: 0,
 
   /**
    * Инициализирует галерею, ставит обработчик события.
@@ -41,35 +41,35 @@ const carousel = {
 
 
   init(userSettings = {}) {
-    console.log('asd');
-
     // Записываем настройки, которые передал пользователь в наши настройки.
     Object.assign(settingsCarousel, userSettings);
 
     let xhrImgs = new XMLHttpRequest();
-    xhrImgs.open('GET', this.settingsCarousel.imagesJSON, false);
     let savedThis = this;
+
+    //true - асинхронный
+    xhrImgs.open('GET', this.settingsCarousel.imagesJSON, true);
     xhrImgs.onload = function () {
       if (this.status === 200) {
         let response = JSON.parse(xhrImgs.responseText);
         for (let key in response) {
           savedThis.images.push(response[key]);
         }
+        that.render();
       }
     };
     xhrImgs.send();
-
-    this.buildHtml();
-    this.createArrowLeft();
-    this.createArrowRight();
   },
 
-  buildHtml() {
+  render() {
     this.carouselEl = document.querySelector(this.settingsCarousel.carouselSelector);
     this.carouselInner = document.createElement('div');
     this.carouselInner.classList.add(this.settingsCarousel.carouselInnerClass)
     this.carouselEl.append(this.carouselInner);
     this.currentImg = this.loadImage();
+
+    this.createArrowLeft();
+    this.createArrowRight();
   },
   /**
    * Возвращает следующий элемент (картинку) от открытой или первую картинку в контейнере,
