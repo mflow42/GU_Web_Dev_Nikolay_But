@@ -1,20 +1,7 @@
 "use strict";
 
-/**
- * @property {Object} settings Объект с настройками галереи.
- * @property {string} settings.carouselSelector Селектор обертки для миниатюр галереи.
- * @property {string} settings.currentImageSelector Класс для обертки открытой картинки.
- * @property {string} settings.openedImageClass Класс открытой картинки.
- * @property {string} settings.openedImageScreenClass Класс для ширмы открытой картинки.
- * @property {string} settings.openedImageCloseBtnClass Класс для картинки кнопки закрыть.
- * @property {string} settings.openedImageCloseBtnSrc Путь до картинки кнопки открыть.
- * @property {string} settings.openedImageArrowPrevIcon Путь до левой картинки-стрелки слайдера.
- * @property {string} settings.openedImageArrowPrevClass Класс левой картинки-стрелки слайдера.
- * @property {string} settings.openedImageArrowNextIcon Путь до правой картинки-стрелки слайдера.
- * @property {string} settings.openedImageArrowNextClass Класс правой картинки-стрелки слайдера.
- */
 const settingsCarousel = {
-  carouselSelector: 'carousel',
+  idCarousel: 'carousel',
   carouselInnerClass: 'carousel__inner',
   currentImageClass: 'carousel__img',
   arrowPrevSpanClass: 'carousel__inner_left-arrow',
@@ -25,7 +12,7 @@ const settingsCarousel = {
   imagesJSON: 'json/carousel.json',
 };
 
-const carousel = {
+let carousel = {
   settingsCarousel,
   carouselEl: null,
   carouselInner: null,
@@ -34,15 +21,10 @@ const carousel = {
   currentImgSrc: null,
   currentImgIndex: 0,
 
-  /**
-   * Инициализирует галерею, ставит обработчик события.
-   * @param {Object} userSettings Объект настроек для галереи.
-   */
-
-
-  init(userSettings = {}) {
+  init() {
     // Записываем настройки, которые передал пользователь в наши настройки.
-    Object.assign(settingsCarousel, userSettings);
+    // Object.assign(this.settingsCarousel, userSettings);
+    this.carouselEl = document.querySelector(`#${this.settingsCarousel.idCarousel}`);
 
     let xhrImgs = new XMLHttpRequest();
     let savedThis = this;
@@ -55,19 +37,19 @@ const carousel = {
         for (let key in response) {
           savedThis.images.push(response[key]);
         }
-        that.render();
+        savedThis.render();
       }
     };
     xhrImgs.send();
   },
 
   render() {
-    this.carouselEl = document.querySelector(this.settingsCarousel.carouselSelector);
     this.carouselInner = document.createElement('div');
-    this.carouselInner.classList.add(this.settingsCarousel.carouselInnerClass)
-    this.carouselEl.append(this.carouselInner);
-    this.currentImg = this.loadImage();
+    this.carouselInner.classList.add(`${this.settingsCarousel.carouselInnerClass}`);
 
+    this.carouselEl.append(this.carouselInner);
+
+    this.currentImg = this.loadImage();
     this.createArrowLeft();
     this.createArrowRight();
   },

@@ -29,7 +29,7 @@ const comments = {
 
   init(userSettings = {}) {
     // Записываем настройки, которые передал пользователь в наши настройки.
-    Object.assign(settingsComments, userSettings);
+    Object.assign(this.settingsComments, userSettings);
     this.commentEl = document.querySelector(`#${settingsComments.idContainer}`);
     this.commentEl.addEventListener('click', this.btnClickHandler.bind(this));
     let xhr = new XMLHttpRequest();
