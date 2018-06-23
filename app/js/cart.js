@@ -1,7 +1,7 @@
 "use strict";
 
 
-const settings = {
+const settingsCart = {
   'cartWrapperSelector': 'cart__wrapper',
   'cartIconSelector': 'cart__icon',
   'cartElemClass': 'cart__items',
@@ -20,12 +20,14 @@ const settings = {
 }
 
 const cart = {
-  settings,
+  settingsCart,
   total: 0,
   // Инициализируем корзину
   init(userSettings = {}) {
     // Записываем настройки, которые передал пользователь в наши настройки.
-    Object.assign(this.settingsComments, userSettings);
+    Object.assign(this.settingsCart, userSettings);
+
+    //создадим заглушку из товаров
     let items = [{
       "id": 1,
       "imgPath": "img/cart-1.png",
