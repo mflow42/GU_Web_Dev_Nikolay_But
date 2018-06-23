@@ -56,32 +56,32 @@ const cart = {
 
   // Создаем элемент и добавляем его на страницу
   createCartElem(cartEl, items) {
-    const cartEl = document.createElement('div');
-    cartEl.classList.add(this.settingsCart.cartElemClass);
-    cartEl.style.display === "none";
+    const cartContainer = document.createElement('div');
+    cartContainer.classList.add(this.settingsCart.cartElemClass);
+    cartContainer.style.display === "none";
 
     // Добавляем события на наведение мышкой для открытия коризны и клик снаружи элемента для закрытия
-    this.addCartEventShow(cartEl, cartEl, items);
+    this.addCartEventShow(cartEl, cartContainer, items);
 
     // Добавляем корзину на страницу
-    cartEl.parentElement.insertBefore(cartEl, cartEl.nextSibling);
+    cartEl.parentElement.insertBefore(cartContainer, cartEl.nextSibling);
   },
 
-  addCartEventShow(cartEl, cartEl, items) {
+  addCartEventShow(cartEl, cartContainer, items) {
     cartEl.addEventListener('mouseenter', () => {
-      cartEl.style.display = "block";
+      cartContainer.style.display = "block";
       if (items.length === 0) {
-        this.showEmptyCart(cartEl);
+        this.showEmptyCart(cartContainer);
       } else {
-        this.render(cartEl, items);
+        this.render(cartContainer, items);
       }
     });
-    document.body.addEventListener('click', (e) => {
-      if (e.target.closest(`.${this.settingsCart.cartElemClass}`) ||
-        e.target.closest(`.${this.settingsCart.cartIconSelector}`)) {
+    document.body.addEventListener('click', (event) => {
+      if (event.target.closest(`.${this.settingsCart.cartElemClass}`) ||
+        event.target.closest(`.${this.settingsCart.cartIconSelector}`)) {
         return;
       } else {
-        cartEl.style.display = "none";
+        cartContainer.style.display = "none";
       }
     });
   },
@@ -90,78 +90,81 @@ const cart = {
     //сначала очищаем содержимое HTML корзины
     cartEl.innerHTML = '';
 
-    //проходим по массиву товаров и рендерим для них HTML и добавляем его в корзину
-    items.forEach( item => {
-      //создаем разделитель
-      let hr = document.createElement("div");
-      hr.style.backgroundColor = "rgba(237, 237, 237, 0.75)";
-      hr.style.height = "1px";
-      hr.style.marginTop = "16px";
-      hr.style.marginBottom = "16px";
-      //создаем див куда вкладываем картинку названием рейтинг, кнопку удаления и цену с количеством
-      let prod = document.createElement("div");
-      prod.classList.add(this.settingsCart.cartProdClass);
-      let itemImg = document.createElement("img");
-      itemImg.src = item.imgPath;
-      itemImg.classList.add(this.settingsCart.cartImgClass);
-      prod.append(itemImg);
+    if (items.length > 0) {
 
-      //добавляем элемент с названием товара
-      let name = document.createElement("p");
-      name.classList.add(this.settingsCart.cartNameClass);
-      name.textContent = item.name;
-      prod.append(name);
+      //проходим по массиву товаров и рендерим для них HTML и добавляем его в корзину
+      items.forEach(item => {
+        //создаем разделитель
+        let hr = document.createElement("div");
+        hr.style.backgroundColor = "rgba(237, 237, 237, 0.75)";
+        hr.style.height = "1px";
+        hr.style.marginTop = "16px";
+        hr.style.marginBottom = "16px";
+        //создаем див куда вкладываем картинку названием рейтинг, кнопку удаления и цену с количеством
+        let prod = document.createElement("div");
+        prod.classList.add(this.settingsCart.cartProdClass);
+        let itemImg = document.createElement("img");
+        itemImg.src = item.imgPath;
+        itemImg.classList.add(this.settingsCart.cartImgClass);
+        prod.append(itemImg);
 
-      //создаем див, куда будем добавлять звезды
-      let stars = document.createElement("div");
-      stars.classList.add(this.settingsCart.cartStarsClass)
-      for (let i = 0; i < 5; i++) {
-        if (i < item.rating) {
-          stars.innerHTML += `<i class="fas fa-star cart__star"></i>`;
-        } else {
-          stars.innerHTML += `<i class="far fa-star cart__star"></i>`;
+        //добавляем элемент с названием товара
+        let name = document.createElement("p");
+        name.classList.add(this.settingsCart.cartNameClass);
+        name.textContent = item.name;
+        prod.append(name);
+
+        //создаем див, куда будем добавлять звезды
+        let stars = document.createElement("div");
+        stars.classList.add(this.settingsCart.cartStarsClass)
+        for (let i = 0; i < 5; i++) {
+          if (i < item.rating) {
+            stars.innerHTML += `<i class="fas fa-star cart__star"></i>`;
+          } else {
+            stars.innerHTML += `<i class="far fa-star cart__star"></i>`;
+          }
         }
-      }
-      prod.append(stars);
+        prod.append(stars);
 
-      //создаем обертку под текст количества и цены
-      let priceDiv = document.createElement("div");
-      priceDiv.classList.add(this.settingsCart.cartTextWrapperClass);
+        //создаем обертку под текст количества и цены
+        let priceDiv = document.createElement("div");
+        priceDiv.classList.add(this.settingsCart.cartTextWrapperClass);
 
-      //добавляем спан с количеством
-      let qty = document.createElement("p");
-      qty.textContent = item.qty;
-      qty.classList.add(this.settingsCart.cartTextPinkClass);
-      priceDiv.append(qty);
+        //добавляем спан с количеством
+        let qty = document.createElement("p");
+        qty.textContent = item.qty;
+        qty.classList.add(this.settingsCart.cartTextPinkClass);
+        priceDiv.append(qty);
 
-      //добавляем технический текст "&nbsp;x&nbsp;$"
-      let techText = document.createElement("p");
-      techText.classList.add(this.settingsCart.cartTextTechClass);
-      techText.innerHTML += "&nbsp;&nbsp;x&nbsp;&nbsp;$";
-      priceDiv.append(techText);
-      prod.append(priceDiv);
+        //добавляем технический текст "&nbsp;x&nbsp;$"
+        let techText = document.createElement("p");
+        techText.classList.add(this.settingsCart.cartTextTechClass);
+        techText.innerHTML += "&nbsp;&nbsp;x&nbsp;&nbsp;$";
+        priceDiv.append(techText);
+        prod.append(priceDiv);
 
-      //добавляем цену
-      let price = document.createElement("p");
-      price.classList.add(this.settingsCart.cartTextTechClass);
-      price.textContent = item.price;
-      priceDiv.append(price);
-      prod.append(priceDiv);
+        //добавляем цену
+        let price = document.createElement("p");
+        price.classList.add(this.settingsCart.cartTextTechClass);
+        price.textContent = item.price;
+        priceDiv.append(price);
+        prod.append(priceDiv);
 
-      //добавляем спан с кнопкой-крестиком удаления
-      let closeBtn = document.createElement("p");
-      closeBtn.innerHTML += `<i class="fas fa-times-circle"></i>`;
-      closeBtn.classList.add(this.settingsCart.cartBtnCloseClass);
-      prod.append(closeBtn);
+        //добавляем спан с кнопкой-крестиком удаления
+        let closeBtn = document.createElement("p");
+        closeBtn.innerHTML += `<i class="fas fa-times-circle"></i>`;
+        closeBtn.classList.add(this.settingsCart.cartBtnCloseClass);
+        prod.append(closeBtn);
 
-      //добавляем получившийся элемент в корзину
-      cartEl.append(prod);
-      //добавляем разделитель снизу
-      cartEl.append(hr);
-    });
-    this.countTotal(items);
-    this.makeTotalElem(cartEl);
-    this.cartButtons(cartEl, items);
+        //добавляем получившийся элемент в корзину
+        cartEl.append(prod);
+        //добавляем разделитель снизу
+        cartEl.append(hr);
+      });
+      this.countTotal(items);
+      this.makeTotalElem(cartEl);
+      this.cartButtons(cartEl, items);
+    }
   },
 
   countTotal(items) {
@@ -214,10 +217,10 @@ const cart = {
 
 
   addToCartEvent(itemsInShop, items) {
-
     itemsInShop.forEach(item => {
       item.addEventListener('click', (event) => {
-        const product = new Product(event.target.closest('.product'))
+        const product = null;
+        console.log(event.target.closest('.product'));
         items.push(product);
       });
     })
