@@ -30,6 +30,7 @@ const cart = {
   items: [],
   itemsInShop: [],
   cartShowStatus: false,
+  showCart: null,
 
   // Инициализируем корзину
   init(userSettings = {}) {
@@ -75,40 +76,47 @@ const cart = {
   },
 
   addCartEventShow() {
-    const showCart = () => {
+    this.showCart = () => {
       if (this.cartContainer.style.display === "block") return;
       this.cartContainer.style.display = "block";
       this.cartShowStatus = true;
       if (this.items.length === 0) {
         this.showEmptyCart(this.cartContainer);
       } else {
-        this.render(this.cartContainer, this.items);
+        this.render();
       }
     };
 
     document.body.addEventListener('click', (event) => {
-      if (event.target.closest(`.${this.settingsCart.cartElemClass}`) ||
-        event.target.closest(`.${this.settingsCart.cartIconSelector}`)) {
+      console.log(this);
+      if (
+        event.target.closest(`.${this.settingsCart.cartElemClass}`) ||
+        event.target.closest(`.${this.settingsCart.cartIconSelector}`)
+      ) {
         return;
       } else {
         this.cartContainer.style.display = "none";
         this.cartShowStatus = false;
       }
     });
-    this.cartEl.addEventListener('mouseenter', showCart);
+    this.cartEl.addEventListener('mouseenter', this.showCart);
     //TODO сделать отображение в мобильной версии
-    this.cartMobEl.addEventListener('mouseenter', showCart);
+    this.cartMobEl.addEventListener('mouseenter', this.showCart);
   },
 
-  countTotal(items) {
+  countTotal() {
     this.total = 0;
-    items.forEach(item => {
-      let sum = item.qty * item.price;
-      this.total += sum;
-    });
+    if (this.items.length === 0) {
+      this.total = 0;
+    } else {
+      this.items.forEach(item => {
+        let sum = item.qty * item.price;
+        this.total += sum;
+      });
+    }
   },
 
-  makeTotalElem(cartEl) {
+  makeTotalElem() {
     const wrapper = document.createElement("div");
     wrapper.classList.add(this.settingsCart.cartTotalClass);
 
@@ -127,21 +135,21 @@ const cart = {
 
     wrapper.append(currency);
 
-    cartEl.append(wrapper);
+    this.cartContainer.append(wrapper);
   },
 
-  cartButtons(cartEl) {
+  cartButtons() {
     //создаем кнопку checkout
     let buttonCheckout = document.createElement("button");
     buttonCheckout.classList.add(this.settingsCart.cartButtonCheckoutClass);
     buttonCheckout.textContent = "checkout";
-    cartEl.append(buttonCheckout);
+    this.cartContainer.append(buttonCheckout);
 
     //создаем кнопку go to cart
     let buttonGoToCart = document.createElement("button");
     buttonGoToCart.classList.add(this.settingsCart.cartButtonGoToCartClass);
     buttonGoToCart.textContent = "go to cart";
-    cartEl.append(buttonGoToCart);
+    this.cartContainer.append(buttonGoToCart);
   },
 
   showEmptyCart(cartEl) {
@@ -194,7 +202,7 @@ const cart = {
           this.items.splice(i, 1);
         }
       })
-      this.render(this.cartContainer, this.items);
+      closeBtn.closest('.cart__prod').remove();
     };
 
     closeBtn.addEventListener('click', removeProduct)
@@ -223,12 +231,12 @@ const cart = {
   // };
   // closeBtn.addEventListener('click', removeProduct);
 
-  render(cartEl, items) {
+  render() {
     //сначала очищаем содержимое HTML корзины
     this.cartContainer.innerHTML = '';
-    if (items.length > 0) {
+    if (this.items.length > 0) {
       //проходим по массиву товаров и рендерим для них HTML и добавляем его в корзину
-      items.forEach(item => {
+      this.items.forEach(item => {
         //создаем разделитель
         const hr = document.createElement("div");
         hr.style.backgroundColor = "rgba(237, 237, 237, 0.75)";
@@ -238,6 +246,7 @@ const cart = {
         //создаем див куда вкладываем картинку названием рейтинг, кнопку удаления и цену с количеством
         const prod = document.createElement("div");
         prod.classList.add(this.settingsCart.cartProdClass);
+
         const itemImg = document.createElement("img");
         itemImg.src = item.imgPath;
         itemImg.classList.add(this.settingsCart.cartImgClass);
@@ -295,14 +304,16 @@ const cart = {
         prod.append(closeBtn);
 
         //добавляем получившийся элемент в корзину
-        cartEl.append(prod);
+        this.cartContainer.append(prod);
         //добавляем разделитель снизу
-        cartEl.append(hr);
+        this.cartContainer.append(hr);
       });
-      this.countTotal(items);
-      this.makeTotalElem(cartEl);
-      this.cartButtons(cartEl);
+      this.countTotal();
+      this.makeTotalElem();
+      this.cartButtons();
     }
+    console.log('render');
+
   },
 }
 
