@@ -3,8 +3,7 @@
 
 const settings = {
   'cartWrapperSelector': 'cart__wrapper',
-  'cartIconSelector': '.cart__icon',
-  'cartIconClass': `cart__icon`,
+  'cartIconSelector': 'cart__icon',
   'cartElemClass': 'cart__items',
   'cartImgClass': 'cart__img',
   'cartProdClass': 'cart__prod',
@@ -17,14 +16,16 @@ const settings = {
   'cartTextWrapperClass': 'cart__text_wrapper',
   'cartButtonCheckoutClass': 'cart__btn_pink',
   'cartButtonGoToCartClass': 'cart__btn_grey',
-  'itemsAddButtonsSelector': '.product__add',
+  'itemsAddButtonsSelector': 'product__add',
 }
 
 const cart = {
   settings,
   total: 0,
   // Инициализируем корзину
-  init() {
+  init(userSettings = {}) {
+    // Записываем настройки, которые передал пользователь в наши настройки.
+    Object.assign(this.settingsComments, userSettings);
     let items = [{
       "id": 1,
       "imgPath": "img/cart-1.png",
@@ -41,7 +42,7 @@ const cart = {
       "qty": 2,
     }];
     const cartWrapper = document.querySelector(`#${this.settings.cartWrapperSelector}`);
-    const itemsAddButtonsSelector = document.querySelectorAll(this.settings.itemsAddButtonsSelector);
+    const itemsAddButtonsSelector = document.querySelectorAll(`.${this.settings.itemsAddButtonsSelector}`);
     this.createCartElem(cartWrapper, items);
     this.addToCartEvent(itemsAddButtonsSelector, items);
   },
@@ -70,7 +71,7 @@ const cart = {
     });
     document.body.addEventListener('click', (e) => {
       if (e.target.closest(`.${this.settings.cartElemClass}`) ||
-        e.target.closest(`.${this.settings.cartIconClass}`)) {
+        e.target.closest(`.${this.settings.cartIconSelector}`)) {
         return;
       } else {
         cartElem.style.display = "none";

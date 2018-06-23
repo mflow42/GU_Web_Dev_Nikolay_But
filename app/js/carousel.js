@@ -21,9 +21,9 @@ let carousel = {
   currentImgSrc: null,
   currentImgIndex: 0,
 
-  init() {
+  init(userSettings = {}) {
     // Записываем настройки, которые передал пользователь в наши настройки.
-    // Object.assign(this.settingsCarousel, userSettings);
+    Object.assign(this.settingsCarousel, userSettings);
     this.carouselEl = document.querySelector(`#${this.settingsCarousel.idCarousel}`);
 
     let xhrImgs = new XMLHttpRequest();
