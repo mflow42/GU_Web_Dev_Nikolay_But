@@ -29,6 +29,7 @@ const cart = {
   cartMobEl: null,
   items: [],
   itemsInShop: [],
+  cartShowStatus: false,
 
   // Инициализируем корзину
   init(userSettings = {}) {
@@ -50,69 +51,6 @@ const cart = {
       "rating": 4,
       "price": 49,
       "qty": 2,
-    }, {
-      "id": "0002",
-      "imgPath": "img/cart-2.png",
-      "name": "REBOX ZANE2",
-      "rating": 4,
-      "price": 49,
-      "qty": 2,
-    }, {
-      "id": "0002",
-      "imgPath": "img/cart-2.png",
-      "name": "REBOX ZANE2",
-      "rating": 4,
-      "price": 49,
-      "qty": 2,
-    }, {
-      "id": "0002",
-      "imgPath": "img/cart-2.png",
-      "name": "REBOX ZANE2",
-      "rating": 4,
-      "price": 49,
-      "qty": 2,
-    }, {
-      "id": "0002",
-      "imgPath": "img/cart-2.png",
-      "name": "REBOX ZANE2",
-      "rating": 4,
-      "price": 49,
-      "qty": 2,
-    }, {
-      "id": "0002",
-      "imgPath": "img/cart-2.png",
-      "name": "REBOX ZANE2",
-      "rating": 4,
-      "price": 49,
-      "qty": 2,
-    }, {
-      "id": "0002",
-      "imgPath": "img/cart-2.png",
-      "name": "REBOX ZANE2",
-      "rating": 4,
-      "price": 49,
-      "qty": 2,
-    }, {
-      "id": "0002",
-      "imgPath": "img/cart-2.png",
-      "name": "REBOX ZANE2",
-      "rating": 4,
-      "price": 49,
-      "qty": 2,
-    }, {
-      "id": "0002",
-      "imgPath": "img/cart-2.png",
-      "name": "REBOX ZANE2",
-      "rating": 4,
-      "price": 49,
-      "qty": 2,
-    }, {
-      "id": "0002",
-      "imgPath": "img/cart-2.png",
-      "name": "REBOX ZANE2",
-      "rating": 4,
-      "price": 49,
-      "qty": 2,
     }];
 
     this.cartEl = document.querySelector(`#${this.settingsCart.cartElSelector}`);
@@ -122,7 +60,6 @@ const cart = {
     this.createCartElem(this.cartEl, this.items);
     this.addToCartEvent(this.itemsInShop, this.items);
   },
-
   // Создаем элемент и добавляем его на страницу
   createCartElem(cartEl, items) {
     this.cartContainer = document.createElement('div');
@@ -133,12 +70,15 @@ const cart = {
     this.addCartEventShow(cartEl, this.cartContainer, items);
 
     // Добавляем корзину на страницу
-    this.cartEl.parentElement.insertBefore(this.cartContainer, this.cartEl.nextSibling);
+    // this.cartEl.parentElement.insertBefore(this.cartContainer, this.cartEl.nextSibling);
+    this.cartEl.append(this.cartContainer);
   },
 
   addCartEventShow() {
     const showCart = () => {
+      if (this.cartContainer.style.display === "block") return;
       this.cartContainer.style.display = "block";
+      this.cartShowStatus = true;
       if (this.items.length === 0) {
         this.showEmptyCart(this.cartContainer);
       } else {
@@ -152,98 +92,12 @@ const cart = {
         return;
       } else {
         this.cartContainer.style.display = "none";
+        this.cartShowStatus = false;
       }
     });
-
     this.cartEl.addEventListener('mouseenter', showCart);
-
     //TODO сделать отображение в мобильной версии
     this.cartMobEl.addEventListener('mouseenter', showCart);
-  },
-
-  render(cartEl, items) {
-    console.log(cartEl);
-
-    //сначала очищаем содержимое HTML корзины
-    cartEl.innerHTML = '';
-
-    if (items.length > 0) {
-
-      //проходим по массиву товаров и рендерим для них HTML и добавляем его в корзину
-      items.forEach(item => {
-        //создаем разделитель
-        let hr = document.createElement("div");
-        hr.style.backgroundColor = "rgba(237, 237, 237, 0.75)";
-        hr.style.height = "1px";
-        hr.style.marginTop = "16px";
-        hr.style.marginBottom = "16px";
-        //создаем див куда вкладываем картинку названием рейтинг, кнопку удаления и цену с количеством
-        let prod = document.createElement("div");
-        prod.classList.add(this.settingsCart.cartProdClass);
-        let itemImg = document.createElement("img");
-        itemImg.src = item.imgPath;
-        itemImg.classList.add(this.settingsCart.cartImgClass);
-        prod.append(itemImg);
-
-        //добавляем элемент с названием товара
-        let name = document.createElement("p");
-        name.classList.add(this.settingsCart.cartNameClass);
-        name.textContent = item.name;
-        prod.append(name);
-
-        //создаем див, куда будем добавлять звезды
-        let stars = document.createElement("div");
-        stars.classList.add(this.settingsCart.cartStarsClass)
-        for (let i = 0; i < 5; i++) {
-          if (i < item.rating) {
-            stars.innerHTML += `<i class="fas fa-star cart__star"></i>`;
-          } else {
-            stars.innerHTML += `<i class="far fa-star cart__star"></i>`;
-          }
-        }
-        prod.append(stars);
-
-        //создаем обертку под текст количества и цены
-        let priceDiv = document.createElement("div");
-        priceDiv.classList.add(this.settingsCart.cartTextWrapperClass);
-
-        //добавляем спан с количеством
-        let qty = document.createElement("p");
-        qty.textContent = item.qty;
-        qty.classList.add(this.settingsCart.cartTextPinkClass);
-        priceDiv.append(qty);
-
-        //добавляем технический текст "&nbsp;x&nbsp;$"
-        let techText = document.createElement("p");
-        techText.classList.add(this.settingsCart.cartTextTechClass);
-        techText.innerHTML += "&nbsp;&nbsp;x&nbsp;&nbsp;$";
-        priceDiv.append(techText);
-        prod.append(priceDiv);
-
-        //добавляем цену
-        let price = document.createElement("p");
-        price.classList.add(this.settingsCart.cartTextTechClass);
-        price.textContent = item.price;
-        priceDiv.append(price);
-        prod.append(priceDiv);
-
-        //добавляем спан с кнопкой-крестиком удаления
-        let closeBtn = document.createElement("p");
-        closeBtn.innerHTML += `<i class="fas fa-times-circle"></i>`;
-        closeBtn.classList.add(this.settingsCart.cartBtnCloseClass);
-        prod.append(closeBtn);
-
-        //добавляем получившийся элемент в корзину
-        cartEl.append(prod);
-        //добавляем разделитель снизу
-        cartEl.append(hr);
-      });
-      this.countTotal(items);
-      this.makeTotalElem(cartEl);
-      this.cartButtons(cartEl);
-    }
-    console.log(cartEl);
-
   },
 
   countTotal(items) {
@@ -255,16 +109,24 @@ const cart = {
   },
 
   makeTotalElem(cartEl) {
-    let wrapper = document.createElement("div");
+    const wrapper = document.createElement("div");
     wrapper.classList.add(this.settingsCart.cartTotalClass);
-    let text = document.createElement("div");
-    text.width = "50%";
+
+    const text = document.createElement("span");
+    // text.width = "50%";
     text.textContent = "TOTAL";
     wrapper.append(text);
-    let total = document.createElement("div");
-    total.width = "50%";
-    total.textContent = this.total;
-    wrapper.append(total);
+
+    const currency = document.createElement('span');
+    const totalCurrency = document.createElement("span");
+    totalCurrency.textContent = '$';
+    const total = document.createElement("span");
+    total.textContent = this.total.toFixed(2);
+    currency.append(totalCurrency);
+    currency.append(total);
+
+    wrapper.append(currency);
+
     cartEl.append(wrapper);
   },
 
@@ -281,6 +143,7 @@ const cart = {
     buttonGoToCart.textContent = "go to cart";
     cartEl.append(buttonGoToCart);
   },
+
   showEmptyCart(cartEl) {
     if (cartEl.children.length === 0) {
       cartEl.style.lineHeight = "85px";
@@ -322,6 +185,124 @@ const cart = {
         }
       });
     })
+  },
+
+  addRemoveFromCartEvent(closeBtn) {
+    const removeProduct = () => {
+      this.items.forEach((item, i) => {
+        if (item.id === closeBtn.dataset.id) {
+          this.items.splice(i, 1);
+        }
+      })
+      this.render(this.cartContainer, this.items);
+    };
+
+    closeBtn.addEventListener('click', removeProduct)
+    // const removeBtns = this.cartContainer.querySelectorAll(`.${this.settingsCart.cartBtnCloseClass}`);
+    // // console.log(removeBtns);
+    // for (const btn of removeBtns) {
+    //   console.log(btn);
+
+
+    // }
+    // for (let obj of removeBtns) {
+    //   obj.addEventListener('click', removeProduct);
+
+    // }
+
+
+  },
+
+  // const removeProduct = () => {
+  //   const productIndex = () => {
+  //     return this.items.findIndex( (item, i, arr) => item.id === closeBtn.dataset.id)
+  //   };
+  //   productIndex();
+  //   console.log(productIndex());
+  //   this.items.splice(productIndex, 1);
+  // };
+  // closeBtn.addEventListener('click', removeProduct);
+
+  render(cartEl, items) {
+    //сначала очищаем содержимое HTML корзины
+    this.cartContainer.innerHTML = '';
+    if (items.length > 0) {
+      //проходим по массиву товаров и рендерим для них HTML и добавляем его в корзину
+      items.forEach(item => {
+        //создаем разделитель
+        const hr = document.createElement("div");
+        hr.style.backgroundColor = "rgba(237, 237, 237, 0.75)";
+        hr.style.height = "1px";
+        hr.style.marginTop = "16px";
+        hr.style.marginBottom = "16px";
+        //создаем див куда вкладываем картинку названием рейтинг, кнопку удаления и цену с количеством
+        const prod = document.createElement("div");
+        prod.classList.add(this.settingsCart.cartProdClass);
+        const itemImg = document.createElement("img");
+        itemImg.src = item.imgPath;
+        itemImg.classList.add(this.settingsCart.cartImgClass);
+        prod.append(itemImg);
+
+        //добавляем элемент с названием товара
+        const name = document.createElement("p");
+        name.classList.add(this.settingsCart.cartNameClass);
+        name.textContent = item.name;
+        prod.append(name);
+
+        //создаем див, куда будем добавлять звезды
+        const stars = document.createElement("div");
+        stars.classList.add(this.settingsCart.cartStarsClass)
+        for (let i = 0; i < 5; i++) {
+          if (i < item.rating) {
+            stars.innerHTML += `<i class="fas fa-star cart__star"></i>`;
+          } else {
+            stars.innerHTML += `<i class="far fa-star cart__star"></i>`;
+          }
+        }
+        prod.append(stars);
+
+        //создаем обертку под текст количества и цены
+        const priceDiv = document.createElement("div");
+        priceDiv.classList.add(this.settingsCart.cartTextWrapperClass);
+
+        //добавляем спан с количеством
+        const qty = document.createElement("p");
+        qty.textContent = item.qty;
+        qty.classList.add(this.settingsCart.cartTextPinkClass);
+        priceDiv.append(qty);
+
+        //добавляем технический текст "&nbsp;x&nbsp;$"
+        const techText = document.createElement("p");
+        techText.classList.add(this.settingsCart.cartTextTechClass);
+        techText.innerHTML += "&nbsp;&nbsp;x&nbsp;&nbsp;$";
+        priceDiv.append(techText);
+        prod.append(priceDiv);
+
+        //добавляем цену
+        const price = document.createElement("p");
+        price.classList.add(this.settingsCart.cartTextTechClass);
+        price.textContent = item.price;
+        priceDiv.append(price);
+        prod.append(priceDiv);
+
+        //добавляем спан с кнопкой-крестиком удаления
+        const closeBtn = document.createElement("p");
+        closeBtn.innerHTML += `<i class="fas fa-times-circle"></i>`;
+        closeBtn.classList.add(this.settingsCart.cartBtnCloseClass);
+        closeBtn.dataset.id = item.id;
+        this.addRemoveFromCartEvent(closeBtn);
+
+        prod.append(closeBtn);
+
+        //добавляем получившийся элемент в корзину
+        cartEl.append(prod);
+        //добавляем разделитель снизу
+        cartEl.append(hr);
+      });
+      this.countTotal(items);
+      this.makeTotalElem(cartEl);
+      this.cartButtons(cartEl);
+    }
   },
 }
 
