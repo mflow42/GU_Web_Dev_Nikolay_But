@@ -3,7 +3,7 @@
 
 const settingsCart = {
   'cartElSelector': 'cart',
-  'cartMobileElSelector': 'cart-mobile',
+  'cartMobElSelector': 'cart-mobile',
   'cartIconSelector': 'cart__icon',
   'cartElemClass': 'cart__items',
   'cartImgClass': 'cart__img',
@@ -53,9 +53,8 @@ const cart = {
     }];
 
     this.cartEl = document.querySelector(`#${this.settingsCart.cartElSelector}`);
-    this.cartMobEl = document.querySelector(`#${this.settingsCart.carMobElSelector}`);
+    this.cartMobEl = document.querySelector(`#${this.settingsCart.cartMobElSelector}`);
     this.itemsInShop = document.querySelectorAll(`.${this.settingsCart.itemsInShopSelector}`);
-    console.log(this.items);
 
     this.createCartElem(this.cartEl, this.items);
     this.addToCartEvent(this.itemsInShop, this.items);
@@ -71,7 +70,7 @@ const cart = {
     this.addCartEventShow(cartEl, this.cartContainer, items);
 
     // Добавляем корзину на страницу
-    cartEl.parentElement.insertBefore(this.cartContainer, cartEl.nextSibling);
+    this.cartEl.parentElement.insertBefore(this.cartContainer, this.cartEl.nextSibling);
   },
 
   addCartEventShow() {
@@ -94,6 +93,8 @@ const cart = {
     });
 
     this.cartEl.addEventListener('mouseenter', showCart);
+
+    //TODO сделать отображение в мобильной версии
     this.cartMobEl.addEventListener('mouseenter', showCart);
   },
 
