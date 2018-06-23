@@ -1593,10 +1593,10 @@ body {
   background: linear-gradient(180deg, #f2f2f2 0%, #f0f0f0 100%);
 }
 
-.cart__wrapper {
+.cart {
   position: relative;
 }
-.cart__wrapper:hover .cart__icon {
+.cart:hover .cart__icon {
   -webkit-filter: drop-shadow(0 0 7px #f16d7f);
           filter: drop-shadow(0 0 7px #f16d7f);
   -webkit-transform: rotate3d(0, 1, 0, 180deg);

@@ -1276,12 +1276,10 @@ body {
 }
 
 .cart {
-  &__wrapper {
-    position: relative;
-    &:hover .cart__icon {
-      filter: drop-shadow(0 0 7px #f16d7f);
-      transform: rotate3d(0, 1, 0, 180deg);
-    }
+  position: relative;
+  &:hover &__icon {
+    filter: drop-shadow(0 0 7px #f16d7f);
+    transform: rotate3d(0, 1, 0, 180deg);
   }
   &__items {
     display: none;

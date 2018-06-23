@@ -2,7 +2,7 @@
 
 
 const settingsCart = {
-  'cartWrapperSelector': 'cart__wrapper',
+  'cartElSelector': 'cart',
   'cartIconSelector': 'cart__icon',
   'cartElemClass': 'cart__items',
   'cartImgClass': 'cart__img',
@@ -16,19 +16,23 @@ const settingsCart = {
   'cartTextWrapperClass': 'cart__text_wrapper',
   'cartButtonCheckoutClass': 'cart__btn_pink',
   'cartButtonGoToCartClass': 'cart__btn_grey',
-  'itemsAddButtonsSelector': 'product__add',
+  'itemsAddButtonSelector': 'product__add',
 }
 
 const cart = {
   settingsCart,
   total: 0,
+  cartEl: null,
+  items: [],
+  itemsInShop: [],
+
   // Инициализируем корзину
   init(userSettings = {}) {
     // Записываем настройки, которые передал пользователь в наши настройки.
     Object.assign(this.settingsCart, userSettings);
 
     //создадим заглушку из товаров
-    let items = [{
+    this.items = [{
       "id": 1,
       "imgPath": "img/cart-1.png",
       "name": "REBOX ZANE1",
@@ -43,50 +47,51 @@ const cart = {
       "price": 52,
       "qty": 2,
     }];
-    const cartWrapper = document.querySelector(`#${this.settings.cartWrapperSelector}`);
-    const itemsAddButtonsSelector = document.querySelectorAll(`.${this.settings.itemsAddButtonsSelector}`);
-    this.createCartElem(cartWrapper, items);
-    this.addToCartEvent(itemsAddButtonsSelector, items);
+
+    this.cartEl = document.querySelector(`#${this.settingsCart.cartElSelector}`);
+    this.itemsInShop = document.querySelectorAll(`.${this.settingsCart.itemsAddButtonSelector}`);
+    this.createCartElem(this.cartEl, this.items);
+    this.addToCartEvent(this.itemsInShop, this.items);
   },
 
   // Создаем элемент и добавляем его на страницу
-  createCartElem(cartWrapper, items) {
-    const cartElem = document.createElement('div');
-    cartElem.classList.add(this.settings.cartElemClass);
-    cartElem.style.display === "none";
+  createCartElem(cartEl, items) {
+    const cartEl = document.createElement('div');
+    cartEl.classList.add(this.settingsCart.cartElemClass);
+    cartEl.style.display === "none";
 
     // Добавляем события на наведение мышкой для открытия коризны и клик снаружи элемента для закрытия
-    this.addCartEventShow(cartWrapper, cartElem, items);
+    this.addCartEventShow(cartEl, cartEl, items);
 
     // Добавляем корзину на страницу
-    cartWrapper.parentElement.insertBefore(cartElem, cartWrapper.nextSibling);
+    cartEl.parentElement.insertBefore(cartEl, cartEl.nextSibling);
   },
 
-  addCartEventShow(cartWrapper, cartElem, items) {
-    cartWrapper.addEventListener('mouseenter', () => {
-      cartElem.style.display = "block";
+  addCartEventShow(cartEl, cartEl, items) {
+    cartEl.addEventListener('mouseenter', () => {
+      cartEl.style.display = "block";
       if (items.length === 0) {
-        this.showEmptyCart(cartElem);
+        this.showEmptyCart(cartEl);
       } else {
-        this.cartRender(cartElem, items);
+        this.render(cartEl, items);
       }
     });
     document.body.addEventListener('click', (e) => {
-      if (e.target.closest(`.${this.settings.cartElemClass}`) ||
-        e.target.closest(`.${this.settings.cartIconSelector}`)) {
+      if (e.target.closest(`.${this.settingsCart.cartElemClass}`) ||
+        e.target.closest(`.${this.settingsCart.cartIconSelector}`)) {
         return;
       } else {
-        cartElem.style.display = "none";
+        cartEl.style.display = "none";
       }
     });
   },
 
-  cartRender(cartElem, items) {
+  render(cartEl, items) {
     //сначала очищаем содержимое HTML корзины
-    cartElem.innerHTML = null;
+    cartEl.innerHTML = '';
 
     //проходим по массиву товаров и рендерим для них HTML и добавляем его в корзину
-    items.forEach((item, i, arr) => {
+    items.forEach( item => {
       //создаем разделитель
       let hr = document.createElement("div");
       hr.style.backgroundColor = "rgba(237, 237, 237, 0.75)";
@@ -95,21 +100,21 @@ const cart = {
       hr.style.marginBottom = "16px";
       //создаем див куда вкладываем картинку названием рейтинг, кнопку удаления и цену с количеством
       let prod = document.createElement("div");
-      prod.classList.add(this.settings.cartProdClass);
+      prod.classList.add(this.settingsCart.cartProdClass);
       let itemImg = document.createElement("img");
       itemImg.src = item.imgPath;
-      itemImg.classList.add(this.settings.cartImgClass);
+      itemImg.classList.add(this.settingsCart.cartImgClass);
       prod.append(itemImg);
 
       //добавляем элемент с названием товара
       let name = document.createElement("p");
-      name.classList.add(this.settings.cartNameClass);
+      name.classList.add(this.settingsCart.cartNameClass);
       name.textContent = item.name;
       prod.append(name);
 
       //создаем див, куда будем добавлять звезды
       let stars = document.createElement("div");
-      stars.classList.add(this.settings.cartStarsClass)
+      stars.classList.add(this.settingsCart.cartStarsClass)
       for (let i = 0; i < 5; i++) {
         if (i < item.rating) {
           stars.innerHTML += `<i class="fas fa-star cart__star"></i>`;
@@ -121,24 +126,24 @@ const cart = {
 
       //создаем обертку под текст количества и цены
       let priceDiv = document.createElement("div");
-      priceDiv.classList.add(this.settings.cartTextWrapperClass);
+      priceDiv.classList.add(this.settingsCart.cartTextWrapperClass);
 
       //добавляем спан с количеством
       let qty = document.createElement("p");
       qty.textContent = item.qty;
-      qty.classList.add(this.settings.cartTextPinkClass);
+      qty.classList.add(this.settingsCart.cartTextPinkClass);
       priceDiv.append(qty);
 
       //добавляем технический текст "&nbsp;x&nbsp;$"
       let techText = document.createElement("p");
-      techText.classList.add(this.settings.cartTextTechClass);
+      techText.classList.add(this.settingsCart.cartTextTechClass);
       techText.innerHTML += "&nbsp;&nbsp;x&nbsp;&nbsp;$";
       priceDiv.append(techText);
       prod.append(priceDiv);
 
       //добавляем цену
       let price = document.createElement("p");
-      price.classList.add(this.settings.cartTextTechClass);
+      price.classList.add(this.settingsCart.cartTextTechClass);
       price.textContent = item.price;
       priceDiv.append(price);
       prod.append(priceDiv);
@@ -146,17 +151,17 @@ const cart = {
       //добавляем спан с кнопкой-крестиком удаления
       let closeBtn = document.createElement("p");
       closeBtn.innerHTML += `<i class="fas fa-times-circle"></i>`;
-      closeBtn.classList.add(this.settings.cartBtnCloseClass);
+      closeBtn.classList.add(this.settingsCart.cartBtnCloseClass);
       prod.append(closeBtn);
 
       //добавляем получившийся элемент в корзину
-      cartElem.append(prod);
+      cartEl.append(prod);
       //добавляем разделитель снизу
-      cartElem.append(hr);
+      cartEl.append(hr);
     });
     this.countTotal(items);
-    this.makeTotalElem(cartElem);
-    this.cartButtons(cartElem, items);
+    this.makeTotalElem(cartEl);
+    this.cartButtons(cartEl, items);
   },
 
   countTotal(items) {
@@ -167,9 +172,9 @@ const cart = {
     });
   },
 
-  makeTotalElem(cartElem) {
+  makeTotalElem(cartEl) {
     let wrapper = document.createElement("div");
-    wrapper.classList.add(this.settings.cartTotalClass);
+    wrapper.classList.add(this.settingsCart.cartTotalClass);
     let text = document.createElement("div");
     text.width = "50%";
     text.textContent = "TOTAL";
@@ -178,41 +183,42 @@ const cart = {
     total.width = "50%";
     total.textContent = this.total;
     wrapper.append(total);
-    cartElem.append(wrapper);
+    cartEl.append(wrapper);
   },
 
-  cartButtons(cartElem, items) {
+  cartButtons(cartEl, items) {
     //создаем кнопку checkout
     let buttonCheckout = document.createElement("button");
-    buttonCheckout.classList.add(this.settings.cartButtonCheckoutClass);
+    buttonCheckout.classList.add(this.settingsCart.cartButtonCheckoutClass);
     buttonCheckout.textContent = "checkout";
-    cartElem.append(buttonCheckout);
+    cartEl.append(buttonCheckout);
 
     //создаем кнопку go to cart
     let buttonGoToCart = document.createElement("button");
-    buttonGoToCart.classList.add(this.settings.cartButtonGoToCartClass);
+    buttonGoToCart.classList.add(this.settingsCart.cartButtonGoToCartClass);
     buttonGoToCart.textContent = "go to cart";
-    cartElem.append(buttonGoToCart);
+    cartEl.append(buttonGoToCart);
   },
-  showEmptyCart(cartElem) {
-    if (cartElem.children.length === 0) {
-      cartElem.style.lineHeight = "85px";
-      cartElem.style.fontSize = "14px";
-      cartElem.style.textAlign = "center";
-      cartElem.style.verticalAlign = "center";
-      cartElem.style.backgroundColor = "#fff";
-      cartElem.style.сolor = "#bbb";
-      cartElem.textContent = "Cart is empty";
+  showEmptyCart(cartEl) {
+    if (cartEl.children.length === 0) {
+      cartEl.style.lineHeight = "85px";
+      cartEl.style.fontSize = "14px";
+      cartEl.style.textAlign = "center";
+      cartEl.style.verticalAlign = "center";
+      cartEl.style.backgroundColor = "#fff";
+      cartEl.style.сolor = "#bbb";
+      cartEl.textContent = "Cart is empty";
     }
   },
 
 
 
-  addToCartEvent(itemsAddButtonsSelector, items) {
-    itemsAddButtonsSelector.forEach(item => {
-      item.addEventListener('click', (e) => {
-        items.push(e.target.closest('.product'));
-        console.log(items);
+  addToCartEvent(itemsInShop, items) {
+
+    itemsInShop.forEach(item => {
+      item.addEventListener('click', (event) => {
+        const product = new Product(event.target.closest('.product'))
+        items.push(product);
       });
     })
   },

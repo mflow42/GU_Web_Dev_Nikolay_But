@@ -42,7 +42,7 @@ const comments = {
         response.comments.forEach(el => {
           savedThis.comments.push(el);
         });
-        savedThis.render();
+        savedThis.render(savedThis.commentEl, savedThis.comments, savedThis.settingsComments);
       }
     }
     xhr.send();
@@ -83,7 +83,7 @@ const comments = {
         const comment = target.closest('.comments__comment');
         let foundIndexComment = savedThis.comments.findIndex((item) => item.id_comment === parseInt(comment.dataset.id));
         savedThis.comments.splice(foundIndexComment, 1);
-        savedThis.render();
+        savedThis.render(savedThis.commentEl, savedThis.comments, savedThis.settingsComments);
       }
     }
     xhr.send();
@@ -142,7 +142,7 @@ const comments = {
             id_comment: Date.now(),
             text: savedThis.textAreaEl.value,
           });
-          savedThis.render();
+          savedThis.render(savedThis.commentEl, savedThis.comments, savedThis.settingsComments);
         }
       };
       xhr.send();
@@ -199,22 +199,22 @@ const comments = {
 
 
 
-  render() {
+  render(commentEl, comments, settingsComments) {
     //предварительно очистим внутренности - нужно для перерисовки
-    this.commentEl.innerHTML = '';
+    commentEl.innerHTML = '';
 
-    if (this.comments.length > 0) {
-      for (const obj of this.comments) {
+    if (comments.length > 0) {
+      for (const obj of comments) {
         const comment = new Comment(
           obj.id_comment,
           obj.text,
           obj.approved,
-          `${this.settingsComments.idContainer}${this.settingsComments.classComment}`,
-          `${this.settingsComments.classCommentApproved}`,
-          `${this.settingsComments.idContainer}${this.settingsComments.classMessage}`,
-          `${this.settingsComments.idContainer}${this.settingsComments.classBtnDelete}`,
-          `${this.settingsComments.idContainer}${this.settingsComments.classBtnApprove}`);
-        comment.render(this.commentEl);
+          `${settingsComments.idContainer}${settingsComments.classComment}`,
+          `${settingsComments.classCommentApproved}`,
+          `${settingsComments.idContainer}${settingsComments.classMessage}`,
+          `${settingsComments.idContainer}${settingsComments.classBtnDelete}`,
+          `${settingsComments.idContainer}${settingsComments.classBtnApprove}`);
+        comment.render(commentEl);
       }
     }
     this.makeForm();
