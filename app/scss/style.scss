@@ -1283,12 +1283,12 @@ body {
   }
   &__items {
     display: none;
-    z-index: 1; //    height: 300px;
+    z-index: 999;
     width: 262px;
     border: 0px solid;
-    position: absolute;
+    position: fixed;
     top: 75px;
-    right: 0;
+    right: 75px;
     @include font-change(#777777,
     16px,
     400);

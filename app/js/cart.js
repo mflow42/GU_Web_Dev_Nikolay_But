@@ -3,6 +3,7 @@
 
 const settingsCart = {
   'cartElSelector': 'cart',
+  'cartMobileElSelector': 'cart-mobile',
   'cartIconSelector': 'cart__icon',
   'cartElemClass': 'cart__items',
   'cartImgClass': 'cart__img',
@@ -17,12 +18,15 @@ const settingsCart = {
   'cartButtonCheckoutClass': 'cart__btn_pink',
   'cartButtonGoToCartClass': 'cart__btn_grey',
   'itemsAddButtonSelector': 'product__add',
+  'itemsInShopSelector': 'product',
 }
 
 const cart = {
   settingsCart,
   total: 0,
   cartEl: null,
+  cartContainer: null,
+  cartMobEl: null,
   items: [],
   itemsInShop: [],
 
@@ -33,14 +37,14 @@ const cart = {
 
     //создадим заглушку из товаров
     this.items = [{
-      "id": 1,
+      "id": "0001",
       "imgPath": "img/cart-1.png",
       "name": "REBOX ZANE1",
       "rating": 4,
       "price": 52,
       "qty": 1,
     }, {
-      "id": 2,
+      "id": "0002",
       "imgPath": "img/cart-2.png",
       "name": "REBOX ZANE2",
       "rating": 4,
@@ -49,41 +53,48 @@ const cart = {
     }];
 
     this.cartEl = document.querySelector(`#${this.settingsCart.cartElSelector}`);
-    this.itemsInShop = document.querySelectorAll(`.${this.settingsCart.itemsAddButtonSelector}`);
+    this.cartMobEl = document.querySelector(`#${this.settingsCart.carMobElSelector}`);
+    this.itemsInShop = document.querySelectorAll(`.${this.settingsCart.itemsInShopSelector}`);
+    console.log(this.items);
+
     this.createCartElem(this.cartEl, this.items);
     this.addToCartEvent(this.itemsInShop, this.items);
   },
 
   // Создаем элемент и добавляем его на страницу
   createCartElem(cartEl, items) {
-    const cartContainer = document.createElement('div');
-    cartContainer.classList.add(this.settingsCart.cartElemClass);
-    cartContainer.style.display === "none";
+    this.cartContainer = document.createElement('div');
+    this.cartContainer.classList.add(this.settingsCart.cartElemClass);
+    this.cartContainer.style.display === "none";
 
     // Добавляем события на наведение мышкой для открытия коризны и клик снаружи элемента для закрытия
-    this.addCartEventShow(cartEl, cartContainer, items);
+    this.addCartEventShow(cartEl, this.cartContainer, items);
 
     // Добавляем корзину на страницу
-    cartEl.parentElement.insertBefore(cartContainer, cartEl.nextSibling);
+    cartEl.parentElement.insertBefore(this.cartContainer, cartEl.nextSibling);
   },
 
-  addCartEventShow(cartEl, cartContainer, items) {
-    cartEl.addEventListener('mouseenter', () => {
-      cartContainer.style.display = "block";
-      if (items.length === 0) {
-        this.showEmptyCart(cartContainer);
+  addCartEventShow() {
+    const showCart = () => {
+      this.cartContainer.style.display = "block";
+      if (this.items.length === 0) {
+        this.showEmptyCart(this.cartContainer);
       } else {
-        this.render(cartContainer, items);
+        this.render(this.cartContainer, this.items);
       }
-    });
+    };
+
     document.body.addEventListener('click', (event) => {
       if (event.target.closest(`.${this.settingsCart.cartElemClass}`) ||
         event.target.closest(`.${this.settingsCart.cartIconSelector}`)) {
         return;
       } else {
-        cartContainer.style.display = "none";
+        this.cartContainer.style.display = "none";
       }
     });
+
+    this.cartEl.addEventListener('mouseenter', showCart);
+    this.cartMobEl.addEventListener('mouseenter', showCart);
   },
 
   render(cartEl, items) {
@@ -214,14 +225,30 @@ const cart = {
     }
   },
 
-
-
   addToCartEvent(itemsInShop, items) {
     itemsInShop.forEach(item => {
-      item.addEventListener('click', (event) => {
-        const product = null;
-        console.log(event.target.closest('.product'));
-        items.push(product);
+      // console.log(item.dataset);
+
+      const buttonAddToCart = item.querySelector(`.${this.settingsCart.itemsAddButtonSelector}`)
+      // console.log(buttonAddToCart);
+
+      buttonAddToCart.addEventListener('click', (event) => {
+        const product = event.target.closest(`.${this.settingsCart.itemsInShopSelector}`);
+        console.log(product);
+
+
+
+        const productImg = product.querySelector('.product__image').src;
+        items.push({
+          id: product.dataset.id,
+          imgPath: productImg,
+          name: product.dataset.name,
+          price: parseInt(product.dataset.price),
+          qty: 1,
+          rating: product.dataset.rating,
+        });
+        // console.log(items);
+
       });
     })
   },

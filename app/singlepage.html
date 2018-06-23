@@ -21,54 +21,56 @@
 </head>
 
 <body>
-    <div class="mob-header">
-        <div class="mob-header-block">
-          <div class="mob-header-block__wrapper mob-header-block__wrapper_dark mob-header-block__wrapper_hover-gray">
-            <img class="" src="img/icon-brand-mobile.png" width="44" height="37">
-          </div>
-          <div class="mob-header-block__wrapper mob-header-block__wrapper_hover-gray">
-            <img class="mob-header-block__search" src="img/Forma5.png" width="26" height="27">
-          </div>
-        </div>
-        <div class="mob-header-block">
-          <div class="mob-header-block__wrapper mob-header-block__menu">
-            <i class="fas fa-bars"></i>
-          </div>
-          <div class="mob-header-block__wrapper">
-            <img src="img/Forma4.png" alt="">
-          </div>
-          <div class="mob-header-block__wrapper mob-header-block__wrapper_dark mob-header-block__wrapper_cart">
-            <a href="#" class="cart__icon">
-              <span class="cart__icon_badge">5</span>
-            </a>
-          </div>
-        </div>
-        <nav class="mob-navbar">
-          <ul class="navbar__ul">
-            <li class="navbar__li">
-              <a href="index.html" class="navbar__item">home</a>
-            </li>
-            <li class="navbar__li">
-              <a href="#" class="navbar__item">man</a>
-            </li>
-            <li class="navbar__li">
-              <a href="checkout.html" class="navbar__item">woman</a>
-            </li>
-            <li class="navbar__li">
-              <a href="#" class="navbar__item">kids</a>
-            </li>
-            <li class="navbar__li">
-              <a href="#" class="navbar__item">accessories</a>
-            </li>
-            <li class="navbar__li">
-              <a href="#" class="navbar__item">featured</a>
-            </li>
-            <li class="navbar__li">
-              <a href="#" class="navbar__item">hot deals</a>
-            </li>
-          </ul>
-        </nav>
+  <div class="mob-header">
+    <div class="mob-header-block">
+      <div class="mob-header-block__wrapper mob-header-block__wrapper_dark mob-header-block__wrapper_hover-gray">
+        <img class="" src="img/icon-brand-mobile.png" width="44" height="37">
       </div>
+      <div class="mob-header-block__wrapper mob-header-block__wrapper_hover-gray">
+        <img class="mob-header-block__search" src="img/Forma5.png" width="26" height="27">
+      </div>
+    </div>
+    <div class="mob-header-block">
+      <div class="mob-header-block__wrapper mob-header-block__menu">
+        <i class="fas fa-bars"></i>
+      </div>
+      <div class="mob-header-block__wrapper">
+        <img src="img/Forma4.png" alt="">
+      </div>
+      <div class="mob-header-block__wrapper mob-header-block__wrapper_dark mob-header-block__wrapper_cart">
+        <div id="cart-mobile" class="cart">
+          <a href="#" class="cart__icon">
+            <span class="cart__icon_badge">5</span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <nav class="mob-navbar">
+      <ul class="navbar__ul">
+        <li class="navbar__li">
+          <a href="index.html" class="navbar__item">home</a>
+        </li>
+        <li class="navbar__li">
+          <a href="#" class="navbar__item">man</a>
+        </li>
+        <li class="navbar__li">
+          <a href="checkout.html" class="navbar__item">woman</a>
+        </li>
+        <li class="navbar__li">
+          <a href="#" class="navbar__item">kids</a>
+        </li>
+        <li class="navbar__li">
+          <a href="#" class="navbar__item">accessories</a>
+        </li>
+        <li class="navbar__li">
+          <a href="#" class="navbar__item">featured</a>
+        </li>
+        <li class="navbar__li">
+          <a href="#" class="navbar__item">hot deals</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
 
   <header class="header">
     <div class="header-bar">
@@ -94,6 +96,7 @@
       <div class="header-bar-second">
         <div id="cart" class="cart">
           <a href="#" class="cart__icon"></a>
+          <span class="cart__icon_badge">5</span>
         </div>
         <button class="my-acc-btn">my account&nbsp;&nbsp;
           <i class="fas fa-caret-down"></i>
@@ -197,7 +200,7 @@
 
     <section class="items items-one-row">
       <h1 class="see-also">you may also like</h1>
-      <div class="product" data-id="t-shirt1" data-price="51">
+      <div class="product" data-id="0011" data-imgPath="img/Layer44.jpg" data-name="blaze leggins" data-rating="5" data-price="51">
         <div class="product__buttons">
           <div class="product__add">
             <i class="fas fa-shopping-cart color-white"></i>&nbsp;&nbsp;Add to cart</div>
@@ -209,7 +212,7 @@
         <h2 class="product__name">blaze leggins</h2>
         <p class="product__price">$ 51.00</p>
       </div>
-      <div class="product" data-id="t-shirt2" data-price="52">
+      <div class="product" data-id="0012" data-imgPath="img/Layer45.jpg" data-name="alexa sweater" data-rating="5" data-price="52">
         <div class="product__buttons">
           <div class="product__add">
             <i class="fas fa-shopping-cart color-white"></i>&nbsp;&nbsp;Add to cart</div>
@@ -221,7 +224,7 @@
         <h2 class="product__name">alexa sweater</h2>
         <p class="product__price">$ 52.00</p>
       </div>
-      <div class="product" data-id="t-shirt3" data-price="53">
+      <div class="product" data-id="0013" data-imgPath="img/Layer46.jpg" data-name="agnes top" data-rating="3" data-price="53">
         <div class="product__buttons">
           <div class="product__add">
             <i class="fas fa-shopping-cart color-white"></i>&nbsp;&nbsp;Add to cart</div>
@@ -233,7 +236,7 @@
         <h2 class="product__name">agnes top</h2>
         <p class="product__price">$ 53.00</p>
       </div>
-      <div class="product" data-id="t-shirt4" data-price="54">
+      <div class="product" data-id="0014" data-imgPath="img/Layer47.jpg" data-name="sylva sweater" data-rating="4" data-price="54">
         <div class="product__buttons">
           <div class="product__add">
             <i class="fas fa-shopping-cart color-white"></i>&nbsp;&nbsp;Add to cart</div>

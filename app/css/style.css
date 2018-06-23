@@ -1604,12 +1604,12 @@ body {
 }
 .cart__items {
   display: none;
-  z-index: 1;
+  z-index: 999;
   width: 262px;
   border: 0px solid;
-  position: absolute;
+  position: fixed;
   top: 75px;
-  right: 0;
+  right: 75px;
   color: #777777;
   font-size: 16px;
   font-weight: 400;
