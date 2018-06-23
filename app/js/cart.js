@@ -18,7 +18,7 @@ const settingsCart = {
   'cartButtonCheckoutClass': 'cart__btn_pink',
   'cartButtonGoToCartClass': 'cart__btn_grey',
   'itemsAddButtonSelector': 'product__add',
-  'itemsInShopSelector': 'product',
+  'itemInShopSelector': 'product',
 }
 
 const cart = {
@@ -41,20 +41,20 @@ const cart = {
       "imgPath": "img/cart-1.png",
       "name": "REBOX ZANE1",
       "rating": 4,
-      "price": 52,
+      "price": 48,
       "qty": 1,
     }, {
       "id": "0002",
       "imgPath": "img/cart-2.png",
       "name": "REBOX ZANE2",
       "rating": 4,
-      "price": 52,
+      "price": 49,
       "qty": 2,
     }];
 
     this.cartEl = document.querySelector(`#${this.settingsCart.cartElSelector}`);
     this.cartMobEl = document.querySelector(`#${this.settingsCart.cartMobElSelector}`);
-    this.itemsInShop = document.querySelectorAll(`.${this.settingsCart.itemsInShopSelector}`);
+    this.itemsInShop = document.querySelectorAll(`.${this.settingsCart.itemInShopSelector}`);
 
     this.createCartElem(this.cartEl, this.items);
     this.addToCartEvent(this.itemsInShop, this.items);
@@ -99,6 +99,8 @@ const cart = {
   },
 
   render(cartEl, items) {
+    console.log(cartEl);
+
     //сначала очищаем содержимое HTML корзины
     cartEl.innerHTML = '';
 
@@ -177,6 +179,8 @@ const cart = {
       this.makeTotalElem(cartEl);
       this.cartButtons(cartEl, items);
     }
+    console.log(cartEl);
+
   },
 
   countTotal(items) {
@@ -227,28 +231,33 @@ const cart = {
   },
 
   addToCartEvent(itemsInShop, items) {
-    itemsInShop.forEach(item => {
-      // console.log(item.dataset);
-
+    itemsInShop.forEach((item, i) => {
+      //находим кнопку внутри div product
       const buttonAddToCart = item.querySelector(`.${this.settingsCart.itemsAddButtonSelector}`)
-      // console.log(buttonAddToCart);
-
-      buttonAddToCart.addEventListener('click', (event) => {
-        const product = event.target.closest(`.${this.settingsCart.itemsInShopSelector}`);
-        console.log(product);
-
-
-
-        const productImg = product.querySelector('.product__image').src;
-        items.push({
-          id: product.dataset.id,
-          imgPath: productImg,
-          name: product.dataset.name,
-          price: parseInt(product.dataset.price),
-          qty: 1,
-          rating: product.dataset.rating,
-        });
-        // console.log(items);
+      //навешиваем событие добавления товара в корзину
+      buttonAddToCart.addEventListener('click', () => {
+        //пройдемся по массиву методом some() чтобы узнать есть ли в корзине добавляемый товар
+        if (this.items.some((cartItem) => {
+            //если в корзине уже есть такой товар
+            if (cartItem.id === item.dataset.id) {
+              //то вместо добавления новой строки увеличим количество
+              cartItem.qty++;
+            }
+            //должны вернуть true чтобы сработал метод some();
+            return cartItem.id === item.dataset.id;
+          })) {
+          // some code
+        } else {
+          items.push({
+            id: item.dataset.id,
+            imgPath: item.querySelector('.product__image').src,
+            name: item.dataset.name,
+            price: parseInt(item.dataset.price),
+            qty: 1,
+            rating: item.dataset.rating,
+          });
+        }
+        console.log(this.items);
 
       });
     })
