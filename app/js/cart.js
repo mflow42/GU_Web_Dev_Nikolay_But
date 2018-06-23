@@ -50,6 +50,69 @@ const cart = {
       "rating": 4,
       "price": 49,
       "qty": 2,
+    }, {
+      "id": "0002",
+      "imgPath": "img/cart-2.png",
+      "name": "REBOX ZANE2",
+      "rating": 4,
+      "price": 49,
+      "qty": 2,
+    }, {
+      "id": "0002",
+      "imgPath": "img/cart-2.png",
+      "name": "REBOX ZANE2",
+      "rating": 4,
+      "price": 49,
+      "qty": 2,
+    }, {
+      "id": "0002",
+      "imgPath": "img/cart-2.png",
+      "name": "REBOX ZANE2",
+      "rating": 4,
+      "price": 49,
+      "qty": 2,
+    }, {
+      "id": "0002",
+      "imgPath": "img/cart-2.png",
+      "name": "REBOX ZANE2",
+      "rating": 4,
+      "price": 49,
+      "qty": 2,
+    }, {
+      "id": "0002",
+      "imgPath": "img/cart-2.png",
+      "name": "REBOX ZANE2",
+      "rating": 4,
+      "price": 49,
+      "qty": 2,
+    }, {
+      "id": "0002",
+      "imgPath": "img/cart-2.png",
+      "name": "REBOX ZANE2",
+      "rating": 4,
+      "price": 49,
+      "qty": 2,
+    }, {
+      "id": "0002",
+      "imgPath": "img/cart-2.png",
+      "name": "REBOX ZANE2",
+      "rating": 4,
+      "price": 49,
+      "qty": 2,
+    }, {
+      "id": "0002",
+      "imgPath": "img/cart-2.png",
+      "name": "REBOX ZANE2",
+      "rating": 4,
+      "price": 49,
+      "qty": 2,
+    }, {
+      "id": "0002",
+      "imgPath": "img/cart-2.png",
+      "name": "REBOX ZANE2",
+      "rating": 4,
+      "price": 49,
+      "qty": 2,
     }];
 
     this.cartEl = document.querySelector(`#${this.settingsCart.cartElSelector}`);
@@ -177,7 +240,7 @@ const cart = {
       });
       this.countTotal(items);
       this.makeTotalElem(cartEl);
-      this.cartButtons(cartEl, items);
+      this.cartButtons(cartEl);
     }
     console.log(cartEl);
 
@@ -205,7 +268,7 @@ const cart = {
     cartEl.append(wrapper);
   },
 
-  cartButtons(cartEl, items) {
+  cartButtons(cartEl) {
     //создаем кнопку checkout
     let buttonCheckout = document.createElement("button");
     buttonCheckout.classList.add(this.settingsCart.cartButtonCheckoutClass);
@@ -231,7 +294,7 @@ const cart = {
   },
 
   addToCartEvent(itemsInShop, items) {
-    itemsInShop.forEach((item, i) => {
+    itemsInShop.forEach(item => {
       //находим кнопку внутри div product
       const buttonAddToCart = item.querySelector(`.${this.settingsCart.itemsAddButtonSelector}`)
       //навешиваем событие добавления товара в корзину
@@ -257,8 +320,6 @@ const cart = {
             rating: item.dataset.rating,
           });
         }
-        console.log(this.items);
-
       });
     })
   },

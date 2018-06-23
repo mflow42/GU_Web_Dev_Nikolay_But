@@ -24,6 +24,19 @@ $weight) {
   }
 }
 
+body::-webkit-scrollbar {
+  width: 5px;
+}
+
+body::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  outline: 1px solid slategrey;
+}
+
 %width-main {
   width: 1140px;
   position: relative;
@@ -1287,16 +1300,27 @@ body {
     width: 262px;
     border: 0px solid;
     position: fixed;
+    overflow-y: scroll;
     top: 75px;
-    right: 75px;
+    // right: 75px;
     @include font-change(#777777,
     16px,
     400);
     border-radius: 5px;
     background-color: #ffffff;
     width: 262px;
-    height: auto;
+    height: 70%;
     padding: 16px;
+    &::-webkit-scrollbar {
+      width: 5px;
+    }
+    &::-webkit-scrollbar-track {
+      -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: darkgrey;
+      outline: 1px solid slategrey;
+    }
   }
   &__icon {
     background: url("../img/Forma0.png") center no-repeat;
