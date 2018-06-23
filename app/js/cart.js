@@ -1,10 +1,8 @@
 "use strict";
 
-window.onload = () => cart.init();
 
 const settings = {
-  'cartWrapperSelector': '.cart__wrapper',
-  'cartWrapperClass': `cart__wrapper`,
+  'cartWrapperSelector': 'cart__wrapper',
   'cartIconSelector': '.cart__icon',
   'cartIconClass': `cart__icon`,
   'cartElemClass': 'cart__items',
@@ -42,7 +40,7 @@ const cart = {
       "price": 52,
       "qty": 2,
     }];
-    const cartWrapper = document.querySelector(this.settings.cartWrapperSelector);
+    const cartWrapper = document.querySelector(`#${this.settings.cartWrapperSelector}`);
     const itemsAddButtonsSelector = document.querySelectorAll(this.settings.itemsAddButtonsSelector);
     this.createCartElem(cartWrapper, items);
     this.addToCartEvent(itemsAddButtonsSelector, items);
@@ -216,3 +214,5 @@ const cart = {
     })
   },
 }
+
+window.addEventListener('load', () => cart.init());

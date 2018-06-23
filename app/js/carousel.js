@@ -132,4 +132,4 @@ let carousel = {
 };
 
 // Инициализируем нашу галерею при загрузке страницы.
-window.onload = () => carousel.init();
+window.addEventListener('load', () => carousel.init());

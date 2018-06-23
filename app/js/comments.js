@@ -221,4 +221,4 @@ const comments = {
   },
 };
 
-window.onload = () => comments.init();
+window.addEventListener('load', () => comments.init());
