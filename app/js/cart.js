@@ -17,8 +17,9 @@ const settingsCart = {
   'cartTextWrapperClass': 'cart__text_wrapper',
   'cartButtonCheckoutClass': 'cart__btn_pink',
   'cartButtonGoToCartClass': 'cart__btn_grey',
-  'itemsAddButtonSelector': 'product__add',
   'itemInShopSelector': 'product',
+  'itemsAddButtonSelector': 'product__add',
+  'cartBadge': 'cart__icon_badge',
 }
 
 const cart = {
@@ -31,6 +32,7 @@ const cart = {
   itemsInShop: [],
   cartShowStatus: false,
   showCart: null,
+  cartBadge: null,
 
   // Инициализируем корзину
   init(userSettings = {}) {
@@ -57,6 +59,7 @@ const cart = {
     this.cartEl = document.querySelector(`#${this.settingsCart.cartElSelector}`);
     this.cartMobEl = document.querySelector(`#${this.settingsCart.cartMobElSelector}`);
     this.itemsInShop = document.querySelectorAll(`.${this.settingsCart.itemInShopSelector}`);
+    this.cartBadge = document.querySelectorAll(`.${this.settingsCart.cartBadge}`);
 
     this.createCartElem(this.cartEl, this.items);
     this.addToCartEvent(this.itemsInShop, this.items);
@@ -79,7 +82,6 @@ const cart = {
     this.showCart = () => {
       if (this.cartContainer.style.display === "block") return;
       this.cartContainer.style.display = "block";
-      this.cartShowStatus = true;
       if (this.items.length === 0) {
         this.showEmptyCart(this.cartContainer);
       } else {
@@ -87,18 +89,20 @@ const cart = {
       }
     };
 
+    //если клик вне корзины, то поставить ей display="none", то есть убрать со страницы
     document.body.addEventListener('click', (event) => {
-      console.log(this);
-      if (
-        event.target.closest(`.${this.settingsCart.cartElemClass}`) ||
-        event.target.closest(`.${this.settingsCart.cartIconSelector}`)
-      ) {
-        return;
-      } else {
+      //возвращаем true если видим "#cart" на всплытии - усложнили из-за path на иконке FontAwesome
+      const isItCart = (event) => {
+        return (event.target.closest('#cart') ||
+          event.srcElement.tagName.toUpperCase() === 'PATH' ||
+          event.srcElement.tagName === 'svg');
+      };
+      //проверяем если это не корзина, то ставим display="none"
+      if (!isItCart(event)) {
         this.cartContainer.style.display = "none";
-        this.cartShowStatus = false;
       }
     });
+    //навешиваем на иконку событие показа корзины при наведении
     this.cartEl.addEventListener('mouseenter', this.showCart);
     //TODO сделать отображение в мобильной версии
     this.cartMobEl.addEventListener('mouseenter', this.showCart);
@@ -140,13 +144,14 @@ const cart = {
 
   cartButtons() {
     //создаем кнопку checkout
-    let buttonCheckout = document.createElement("button");
+    let buttonCheckout = document.createElement("a");
     buttonCheckout.classList.add(this.settingsCart.cartButtonCheckoutClass);
     buttonCheckout.textContent = "checkout";
+    buttonCheckout.href = 'checkout.html';
     this.cartContainer.append(buttonCheckout);
 
     //создаем кнопку go to cart
-    let buttonGoToCart = document.createElement("button");
+    let buttonGoToCart = document.createElement("a");
     buttonGoToCart.classList.add(this.settingsCart.cartButtonGoToCartClass);
     buttonGoToCart.textContent = "go to cart";
     this.cartContainer.append(buttonGoToCart);
@@ -195,41 +200,20 @@ const cart = {
     })
   },
 
-  addRemoveFromCartEvent(closeBtn) {
+  removeFromCartEvent(closeBtn) {
     const removeProduct = () => {
       this.items.forEach((item, i) => {
         if (item.id === closeBtn.dataset.id) {
           this.items.splice(i, 1);
+          //отрисовываем корзину чтобы показать ее без удаленного предмета
+          this.render();
         }
       })
       closeBtn.closest('.cart__prod').remove();
     };
 
     closeBtn.addEventListener('click', removeProduct)
-    // const removeBtns = this.cartContainer.querySelectorAll(`.${this.settingsCart.cartBtnCloseClass}`);
-    // // console.log(removeBtns);
-    // for (const btn of removeBtns) {
-    //   console.log(btn);
-
-
-    // }
-    // for (let obj of removeBtns) {
-    //   obj.addEventListener('click', removeProduct);
-
-    // }
-
-
   },
-
-  // const removeProduct = () => {
-  //   const productIndex = () => {
-  //     return this.items.findIndex( (item, i, arr) => item.id === closeBtn.dataset.id)
-  //   };
-  //   productIndex();
-  //   console.log(productIndex());
-  //   this.items.splice(productIndex, 1);
-  // };
-  // closeBtn.addEventListener('click', removeProduct);
 
   render() {
     //сначала очищаем содержимое HTML корзины
@@ -299,7 +283,7 @@ const cart = {
         closeBtn.innerHTML += `<i class="fas fa-times-circle"></i>`;
         closeBtn.classList.add(this.settingsCart.cartBtnCloseClass);
         closeBtn.dataset.id = item.id;
-        this.addRemoveFromCartEvent(closeBtn);
+        this.removeFromCartEvent(closeBtn);
 
         prod.append(closeBtn);
 

@@ -1301,8 +1301,7 @@ body {
     border: 0px solid;
     position: fixed;
     overflow-y: auto;
-    top: 75px;
-    // right: 75px;
+    top: 75px; // right: 75px;
     border-right: 20px transparent;
     @include font-change(#777777,
     16px,
@@ -1338,6 +1337,11 @@ body {
     color: black;
   }
   &__btn_pink {
+    display: flex;
+    justify-content: center;
+    flex-flow: row nowrap;
+    align-items: center;
+    text-decoration: none;
     margin-top: 16px;
     font-size: 16px;
     text-transform: uppercase;
@@ -1423,8 +1427,7 @@ body {
     @include font-change(#222222,
     16px,
     700);
-    font-family: Lato;
-    // width: 50%;
+    font-family: Lato; // width: 50%;
     display: flex;
     justify-content: space-between;
   }
