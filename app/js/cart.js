@@ -8,15 +8,19 @@ const settingsCart = {
   'cartElemClass': 'cart__items',
   'cartImgClass': 'cart__img',
   'cartProdClass': 'cart__prod',
+  'cartEmptyClass': 'cart__empty',
   'cartNameClass': 'cart__name',
   'cartStarsClass': 'cart__stars',
   'cartTotalClass': 'cart__total',
+  'cartLineClass': 'cart__line',
   'cartBtnCloseClass': 'cart__btn_close',
   'cartTextPinkClass': 'cart__text_pink',
   'cartTextTechClass': 'cart__text_tech',
   'cartTextWrapperClass': 'cart__text_wrapper',
-  'cartButtonCheckoutClass': 'cart__btn_pink',
-  'cartButtonGoToCartClass': 'cart__btn_grey',
+  'cartButtonCheckoutClassEnabled': 'cart__btn_pink',
+  'cartButtonCheckoutClassDisabled': 'cart__btn_disabled',
+  'cartButtonGoToCartClassEnabled': 'cart__btn_grey',
+  'cartButtonDisabled': 'cart__btn_disabled',
   'itemInShopSelector': 'product',
   'itemsAddButtonSelector': 'product__add',
   'cartBadge': 'cart__icon_badge',
@@ -30,7 +34,6 @@ const cart = {
   cartMobEl: null,
   items: [],
   itemsInShop: [],
-  cartShowStatus: false,
   showCart: null,
   cartBadge: null,
 
@@ -70,22 +73,56 @@ const cart = {
     this.cartContainer.classList.add(this.settingsCart.cartElemClass);
     this.cartContainer.style.display === "none";
 
-    // Добавляем события на наведение мышкой для открытия коризны и клик снаружи элемента для закрытия
-    this.addCartEventShow(cartEl, this.cartContainer, items);
+    // Добавляем события на наведение мышкой для открытия корзины и клик снаружи элемента для закрытия
+    this.cartShow();
 
     // Добавляем корзину на страницу
     // this.cartEl.parentElement.insertBefore(this.cartContainer, this.cartEl.nextSibling);
     this.cartEl.append(this.cartContainer);
   },
 
-  addCartEventShow() {
+  addToCartEvent(itemsInShop, items) {
+    itemsInShop.forEach(item => {
+      //находим кнопку внутри div product
+      const buttonAddToCart = item.querySelector(`.${this.settingsCart.itemsAddButtonSelector}`)
+      //навешиваем событие добавления товара в корзину
+      buttonAddToCart.addEventListener('click', () => {
+        //пройдемся по массиву методом some() чтобы узнать есть ли в корзине добавляемый товар
+        if (this.items.some((cartItem) => {
+            //если в корзине уже есть такой товар
+            if (cartItem.id === item.dataset.id) {
+              //то вместо добавления новой строки увеличим количество
+              cartItem.qty++;
+            }
+            //должны вернуть true чтобы сработал метод some();
+            return cartItem.id === item.dataset.id;
+          })) {
+          // some code
+        } else {
+          items.push({
+            id: item.dataset.id,
+            imgPath: item.querySelector('.product__image').src,
+            name: item.dataset.name,
+            price: parseInt(item.dataset.price),
+            qty: 1,
+            rating: item.dataset.rating,
+          });
+        }
+      });
+    })
+  },
+
+  cartShow() {
     this.showCart = () => {
-      if (this.cartContainer.style.display === "block") return;
-      this.cartContainer.style.display = "block";
-      if (this.items.length === 0) {
-        this.showEmptyCart(this.cartContainer);
+      if (this.cartContainer.style.display === "block") {
+        return;
       } else {
-        this.render();
+        this.cartContainer.style.display = "block";
+        if (this.items.length === 0) {
+          this.showEmptyCart(this.cartContainer);
+        } else {
+          this.render();
+        }
       }
     };
 
@@ -142,19 +179,38 @@ const cart = {
     this.cartContainer.append(wrapper);
   },
 
-  cartButtons() {
+  cartButtons(trigger) {
     //создаем кнопку checkout
     let buttonCheckout = document.createElement("a");
-    buttonCheckout.classList.add(this.settingsCart.cartButtonCheckoutClass);
+    buttonCheckout.classList.add(this.settingsCart.cartButtonCheckoutClassEnabled);
+    if (trigger === "disabled") buttonCheckout.classList.add(this.settingsCart.cartButtonDisabled);
     buttonCheckout.textContent = "checkout";
     buttonCheckout.href = 'checkout.html';
     this.cartContainer.append(buttonCheckout);
 
     //создаем кнопку go to cart
     let buttonGoToCart = document.createElement("a");
-    buttonGoToCart.classList.add(this.settingsCart.cartButtonGoToCartClass);
+    buttonGoToCart.classList.add(this.settingsCart.cartButtonGoToCartClassEnabled);
+    if (trigger === "disabled") buttonGoToCart.classList.add(this.settingsCart.cartButtonDisabled);
     buttonGoToCart.textContent = "go to cart";
+    buttonGoToCart.href = 'shoppingcart.html';
     this.cartContainer.append(buttonGoToCart);
+  },
+
+
+  removeFromCartEvent(removeBtn) {
+    const removeProduct = () => {
+      this.items.forEach((item, i) => {
+        if (item.id === removeBtn.dataset.id) {
+          this.items.splice(i, 1);
+          //отрисовываем корзину чтобы показать ее без удаленного предмета
+          this.render();
+        }
+      })
+      removeBtn.closest('.cart__prod').remove();
+    };
+
+    removeBtn.addEventListener('click', removeProduct)
   },
 
   showEmptyCart(cartEl) {
@@ -169,64 +225,18 @@ const cart = {
     }
   },
 
-  addToCartEvent(itemsInShop, items) {
-    itemsInShop.forEach(item => {
-      //находим кнопку внутри div product
-      const buttonAddToCart = item.querySelector(`.${this.settingsCart.itemsAddButtonSelector}`)
-      //навешиваем событие добавления товара в корзину
-      buttonAddToCart.addEventListener('click', () => {
-        //пройдемся по массиву методом some() чтобы узнать есть ли в корзине добавляемый товар
-        if (this.items.some((cartItem) => {
-            //если в корзине уже есть такой товар
-            if (cartItem.id === item.dataset.id) {
-              //то вместо добавления новой строки увеличим количество
-              cartItem.qty++;
-            }
-            //должны вернуть true чтобы сработал метод some();
-            return cartItem.id === item.dataset.id;
-          })) {
-          // some code
-        } else {
-          items.push({
-            id: item.dataset.id,
-            imgPath: item.querySelector('.product__image').src,
-            name: item.dataset.name,
-            price: parseInt(item.dataset.price),
-            qty: 1,
-            rating: item.dataset.rating,
-          });
-        }
-      });
-    })
-  },
-
-  removeFromCartEvent(closeBtn) {
-    const removeProduct = () => {
-      this.items.forEach((item, i) => {
-        if (item.id === closeBtn.dataset.id) {
-          this.items.splice(i, 1);
-          //отрисовываем корзину чтобы показать ее без удаленного предмета
-          this.render();
-        }
-      })
-      closeBtn.closest('.cart__prod').remove();
-    };
-
-    closeBtn.addEventListener('click', removeProduct)
-  },
-
   render() {
     //сначала очищаем содержимое HTML корзины
     this.cartContainer.innerHTML = '';
+
+    //если в корзине есть вещи, то проходим по ним, генерируя HTML разметку
     if (this.items.length > 0) {
       //проходим по массиву товаров и рендерим для них HTML и добавляем его в корзину
       this.items.forEach(item => {
         //создаем разделитель
-        const hr = document.createElement("div");
-        hr.style.backgroundColor = "rgba(237, 237, 237, 0.75)";
-        hr.style.height = "1px";
-        hr.style.marginTop = "16px";
-        hr.style.marginBottom = "16px";
+        const line = document.createElement("div");
+        line.classList.add(this.settingsCart.cartLineClass);
+
         //создаем див куда вкладываем картинку названием рейтинг, кнопку удаления и цену с количеством
         const prod = document.createElement("div");
         prod.classList.add(this.settingsCart.cartProdClass);
@@ -279,25 +289,33 @@ const cart = {
         prod.append(priceDiv);
 
         //добавляем спан с кнопкой-крестиком удаления
-        const closeBtn = document.createElement("p");
-        closeBtn.innerHTML += `<i class="fas fa-times-circle"></i>`;
-        closeBtn.classList.add(this.settingsCart.cartBtnCloseClass);
-        closeBtn.dataset.id = item.id;
-        this.removeFromCartEvent(closeBtn);
+        const removeBtn = document.createElement("p");
+        removeBtn.innerHTML += `<i class="fas fa-times-circle"></i>`;
+        removeBtn.classList.add(this.settingsCart.cartBtnCloseClass);
+        removeBtn.dataset.id = item.id;
+        this.removeFromCartEvent(removeBtn);
 
-        prod.append(closeBtn);
+        prod.append(removeBtn);
 
         //добавляем получившийся элемент в корзину
         this.cartContainer.append(prod);
         //добавляем разделитель снизу
-        this.cartContainer.append(hr);
+        this.cartContainer.append(line);
       });
       this.countTotal();
       this.makeTotalElem();
-      this.cartButtons();
+      this.cartButtons("enabled");
+    } else { //если вещей нет, то показываем пустую корзину
+      //создаем див товара, но вкладываем в него текст "Your cart is empty"
+      const prod = document.createElement("div");
+      prod.classList.add(this.settingsCart.cartProdClass);
+      prod.classList.add(this.settingsCart.cartEmptyClass);
+      prod.style.textAlign = "center";
+      prod.style.verticalAlign = "center";
+      prod.textContent = "Your cart is empty"
+      this.cartContainer.append(prod);
+      this.cartButtons("disabled");
     }
-    console.log('render');
-
   },
 }
 

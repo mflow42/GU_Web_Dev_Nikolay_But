@@ -1336,6 +1336,9 @@ body {
     text-decoration: none;
     color: black;
   }
+  &__btn_disabled {
+    pointer-events: none;
+  }
   &__btn_pink {
     display: flex;
     justify-content: center;
@@ -1430,6 +1433,17 @@ body {
     font-family: Lato; // width: 50%;
     display: flex;
     justify-content: space-between;
+  }
+  &__line {
+    background-color: rgba(237, 237, 237, 0.75);
+    height: 1px;
+    margin-top: 16px;
+    margin-bottom: 16px;
+  }
+  &__empty {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
 
