@@ -64,6 +64,36 @@ const cart = {
     this.itemsInShop = document.querySelectorAll(`.${this.settingsCart.itemInShopSelector}`);
     this.cartBadge = document.querySelectorAll(`.${this.settingsCart.cartBadge}`);
 
+
+    this.showCart = () => {
+      //если корзина уже показывается, то не тратим ресурсы и не перерисовываем ее заново
+      if (this.cartContainer.style.display === "block") return;
+      //если ее нет, то показываем
+      else {
+        this.cartContainer.style.display = "block";
+        this.render();
+      }
+    };
+
+    //если клик вне корзины, то поставить ей display="none"
+    document.body.addEventListener('click', (event) => {
+      //возвращаем true если видим "#cart" на всплытии - усложнили из-за path на иконке FontAwesome
+      const isItCart = (event) => {
+        return (event.target.closest('#cart') ||
+          event.srcElement.tagName.toUpperCase() === 'PATH' ||
+          event.srcElement.tagName === 'svg');
+      };
+      //проверяем если это не корзина, то ставим display="none", то есть убираем со страницы
+      if (!isItCart(event)) {
+        this.cartContainer.style.display = "none";
+      }
+    });
+
+    //навешиваем на иконку событие показа корзины при наведении
+    this.cartEl.addEventListener('mouseenter', this.showCart);
+    //TODO сделать отображение в мобильной версии
+    this.cartMobEl.addEventListener('mouseenter', this.showCart);
+
     this.createCartElem(this.cartEl, this.items);
     this.addToCartEvent(this.itemsInShop, this.items);
   },
@@ -72,9 +102,6 @@ const cart = {
     this.cartContainer = document.createElement('div');
     this.cartContainer.classList.add(this.settingsCart.cartElemClass);
     this.cartContainer.style.display === "none";
-
-    // Добавляем события на наведение мышкой для открытия корзины и клик снаружи элемента для закрытия
-    this.cartShow();
 
     // Добавляем корзину на страницу
     // this.cartEl.parentElement.insertBefore(this.cartContainer, this.cartEl.nextSibling);
@@ -110,39 +137,6 @@ const cart = {
         }
       });
     })
-  },
-
-  cartShow() {
-    this.showCart = () => {
-      if (this.cartContainer.style.display === "block") {
-        return;
-      } else {
-        this.cartContainer.style.display = "block";
-        if (this.items.length === 0) {
-          this.showEmptyCart(this.cartContainer);
-        } else {
-          this.render();
-        }
-      }
-    };
-
-    //если клик вне корзины, то поставить ей display="none", то есть убрать со страницы
-    document.body.addEventListener('click', (event) => {
-      //возвращаем true если видим "#cart" на всплытии - усложнили из-за path на иконке FontAwesome
-      const isItCart = (event) => {
-        return (event.target.closest('#cart') ||
-          event.srcElement.tagName.toUpperCase() === 'PATH' ||
-          event.srcElement.tagName === 'svg');
-      };
-      //проверяем если это не корзина, то ставим display="none"
-      if (!isItCart(event)) {
-        this.cartContainer.style.display = "none";
-      }
-    });
-    //навешиваем на иконку событие показа корзины при наведении
-    this.cartEl.addEventListener('mouseenter', this.showCart);
-    //TODO сделать отображение в мобильной версии
-    this.cartMobEl.addEventListener('mouseenter', this.showCart);
   },
 
   countTotal() {
@@ -211,18 +205,6 @@ const cart = {
     };
 
     removeBtn.addEventListener('click', removeProduct)
-  },
-
-  showEmptyCart(cartEl) {
-    if (cartEl.children.length === 0) {
-      cartEl.style.lineHeight = "85px";
-      cartEl.style.fontSize = "14px";
-      cartEl.style.textAlign = "center";
-      cartEl.style.verticalAlign = "center";
-      cartEl.style.backgroundColor = "#fff";
-      cartEl.style.сolor = "#bbb";
-      cartEl.textContent = "Cart is empty";
-    }
   },
 
   render() {
