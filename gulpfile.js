@@ -1,6 +1,7 @@
 const gulp = require('gulp'), //Сам gulp
     sass = require('gulp-sass'), //Плагин для преобразования sass в css
     uglify = require('gulp-uglify'), //Плагин для сжатия js
+    uglifyEs = require('gulp-uglify-es'), //Плагин для сжатия js
     autoPrefix = require('gulp-autoprefixer'), //Для добавления префиксов к css правилам
     htmlMin = require('gulp-htmlmin'), //Минификация html
     delFiles = require('del'), //Модуль для очистки дирректории
@@ -8,7 +9,8 @@ const gulp = require('gulp'), //Сам gulp
     rename = require('gulp-rename'), //Переименование файлов
     BS = require('browser-sync'), //Веб-сервер
     imageMin = require('gulp-imagemin'), //Веб-сервер
-    babel = require('gulp-babel'); //Для преобразования ES6 -> ES5
+    babel = require('gulp-babel'), //Для преобразования ES6 -> ES5
+    concat = require('gulp-concat'); //Для склеивания файлов
 
 /**
  * 1. gulp.task() - создает новую задачу
@@ -20,7 +22,7 @@ gulp.task('default', function () {
     console.log('task default executed');
 });
 
-gulp.task('default', ['delFiles', 'watchFiles', 'html', 'imagemin', 'json', 'fonts', 'sass', 'js', 'server'], function () {
+gulp.task('default', ['delFiles','delFiles', 'watchFiles', 'html', 'imagemin', 'json', 'fonts', 'sass', 'js', 'server'], function () {
     console.log('task gulp executed');
 });
 
@@ -37,7 +39,7 @@ gulp.task('html', function () {
 });
 
 gulp.task('sass', function () {
-    return gulp.src(['./app/css/**/*.css', './app/sass/**/*.sass', './app/scss/**/*.scss'])
+    gulp.src(['./app/css/**/*.css', './app/sass/**/*.sass', './app/scss/**/*.scss'])
         .pipe(sass())
         .pipe(autoPrefix())
         .pipe(gulp.dest('./dist/css'))
@@ -54,13 +56,15 @@ gulp.task('sass', function () {
 
 gulp.task('js', function () {
     gulp.src('./app/js/**/*.js')
-        // .pipe(gulp.dest('./dist/js'))
-        // .pipe(babel())
+        .pipe(concat('script.js'))
+        .pipe(gulp.dest('./dist/js'))
+        .pipe(babel())
+        .pipe(rename({
+            dirname: './dist/js',
+            suffix: '.min'
+        }))
         // .pipe(uglify())
-        // .pipe(rename({
-        //     dirname: './dist/js',
-        //     suffix: '.min'
-        // }))
+        // .pipe(uglifyEs())
         .pipe(gulp.dest('./dist/js'));
 
     BS.reload({
@@ -74,7 +78,7 @@ gulp.task('imagemin', function () {
         //     progressive: true
         // }))
         .pipe(gulp.dest('./dist/img'))
-        
+
     BS.reload({
         stream: false
     });
@@ -91,7 +95,7 @@ gulp.task('json', function () {
 gulp.task('fonts', function () {
     gulp.src(['./app/fonts/**/*'])
         .pipe(gulp.dest('./dist/fonts'))
-        
+
     BS.reload({
         stream: false
     });

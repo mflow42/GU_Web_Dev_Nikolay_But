@@ -1,6 +1,7 @@
 "use strict";
 //TODO comments чтобы не убирался статус "одобрено"
 
+
 const settingsCart = {
   'cartElSelector': 'cart',
   'cartMobElSelector': 'cart-mobile',
