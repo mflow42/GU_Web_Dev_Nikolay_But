@@ -1,14 +1,12 @@
 const gulp = require('gulp'), //Сам gulp
     sass = require('gulp-sass'), //Плагин для преобразования sass в css
     uglify = require('gulp-uglify'), //Плагин для сжатия js
-    uglifyEs = require('gulp-uglify-es'), //Плагин для сжатия js
     autoPrefix = require('gulp-autoprefixer'), //Для добавления префиксов к css правилам
     htmlMin = require('gulp-htmlmin'), //Минификация html
     delFiles = require('del'), //Модуль для очистки дирректории
     cssMinify = require('gulp-csso'), //Минификация css
     rename = require('gulp-rename'), //Переименование файлов
     BS = require('browser-sync'), //Веб-сервер
-    imageMin = require('gulp-imagemin'), //Веб-сервер
     babel = require('gulp-babel'), //Для преобразования ES6 -> ES5
     concat = require('gulp-concat'); //Для склеивания файлов
 
@@ -22,7 +20,7 @@ gulp.task('default', function () {
     console.log('task default executed');
 });
 
-gulp.task('default', ['delFiles','delFiles', 'watchFiles', 'html', 'imagemin', 'json', 'fonts', 'sass', 'js', 'server'], function () {
+gulp.task('default', ['delFiles', 'delFiles', 'watchFiles', 'html', 'imagemin', 'json', 'fonts', 'sass', 'js', 'server'], function () {
     console.log('task gulp executed');
 });
 
@@ -42,6 +40,8 @@ gulp.task('sass', function () {
     gulp.src(['./app/css/**/*.css', './app/sass/**/*.sass', './app/scss/**/*.scss'])
         .pipe(sass())
         .pipe(autoPrefix())
+        .pipe(concat('style.css'))
+
         .pipe(gulp.dest('./dist/css'))
         .pipe(cssMinify())
         .pipe(rename({
@@ -58,13 +58,14 @@ gulp.task('js', function () {
     gulp.src('./app/js/**/*.js')
         .pipe(concat('script.js'))
         .pipe(gulp.dest('./dist/js'))
-        .pipe(babel())
+        .pipe(babel({
+            "presets": ["env"]
+        }))
         .pipe(rename({
-            dirname: './dist/js',
+            dirname: '',
             suffix: '.min'
         }))
-        // .pipe(uglify())
-        // .pipe(uglifyEs())
+        .pipe(uglify())
         .pipe(gulp.dest('./dist/js'));
 
     BS.reload({
