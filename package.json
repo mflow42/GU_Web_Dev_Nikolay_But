@@ -10,7 +10,7 @@
   "devDependencies": {
     "babel-core": "^6.26.3",
     "babel-preset-env": "^1.7.0",
-    "browser-sync": "^2.24.4",
+    "browser-sync": "^2.24.5",
     "cli": "^1.0.1",
     "del": "^3.0.0",
     "gulp": "^3.9.1",
@@ -27,5 +27,13 @@
   "dependencies": {
     "npm": "^6.1.0"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mflow42/GU_Web_Dev_Nikolay_But.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mflow42/GU_Web_Dev_Nikolay_But/issues"
+  },
+  "homepage": "https://github.com/mflow42/GU_Web_Dev_Nikolay_But#readme",
   "description": ""
 }
